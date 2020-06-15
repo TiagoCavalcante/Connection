@@ -136,8 +136,8 @@
 			$this->connection->query($this->buildQuery(queryTypes::TRUNCATE, "$table"));
 		}
 
-		public function delete(string $table, $where = null) : void {
-			$this->connection->query($this->buildQuery(queryTypes::DELETE, "$table", ($where == null) ? null : "$where"));
+		public function delete(string $table, string $where) : void {
+			$this->connection->query($this->buildQuery(queryTypes::DELETE, "$table", "$where"));
 		}
 
 		# SQL functions
