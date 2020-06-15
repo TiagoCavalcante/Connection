@@ -17,9 +17,9 @@
 	
 		# functions
 		# generate function (to generate the SQL code)
-		public function generate(SQL $type) : string {
+		protected function buildQuery(string $type) : string {
 			switch ($type) {
-				case SQL::SELECT:
+				case queryTypes::SELECT:
 					if (\func_num_args() == 3 || \func_num_args() == 4) {
 						$from = \func_get_arg(1);
 						$what = \func_get_arg(2);
@@ -29,11 +29,11 @@
 						return ($where == null) ? "SELECT $what FROM `$from`;" : "SELECT $what FROM `$from` WHERE $where;";
 					}
 					else {
-						throw new Exception('The function expects 3 or 4 parameters but it receives ' . \func_num_args() . ' parameters.');
+						throw new \Exception('The function expects 3 or 4 params but it receives ' . \func_num_args());
 					}
 
 					break;
-				case SQL::COUNT:
+				case queryTypes::COUNT:
 					if (\func_num_args() == 3 || \func_num_args() == 4) {
 						$from = \func_get_arg(1);
 						$what = \func_get_arg(2);
@@ -43,11 +43,11 @@
 						return ($where != null) ? "SELECT COUNT($what) FROM `$from` WHERE $where;" : "SELECT COUNT($what) FROM `$from`;";
 					}
 					else {
-						throw new Exception('The function expects 3 or 4 parameters but it receives ' . \func_num_args() . ' parameters.');
+						throw new \Exception('The function expects 3 or 4 params but it receives ' . \func_num_args());
 					}
 
 					break;
-				case SQL::INSERT:
+				case queryTypes::INSERT:
 					if (\func_num_args() == 3 || \func_num_args() == 4) {
 						$table = \func_get_arg(1);
 						# if the function receive 4 params $what will receive its values, else it'll receive null
@@ -58,11 +58,11 @@
 						return ($what != null) ? "INSERT INTO `$table` ($what) VALUES ($values);" : "INSERT INTO `$table` VALUES ($values);";
 					}
 					else {
-						throw new Exception('The function expects 2 or 3 parameters but it receives ' . \func_num_args() . ' parameters.');
+						throw new \Exception('The function expects 3 or 4 params but it receives ' . \func_num_args());
 					}
 
 					break;
-				case SQL::CREATE:
+				case queryTypes::CREATE:
 					if (\func_num_args() == 3) {
 						$table = \func_get_arg(1);
 						$columns = \func_get_arg(2);
@@ -70,74 +70,74 @@
 						return "CREATE TABLE IF NOT EXISTS `$table` ($columns);";
 					}
 					else {
-						throw new Exception('The function expects 2 parameters but it receives ' . \func_num_args() . ' parameters.');
+						throw new \Exception('The function expects 3 params but it receives ' . \func_num_args());
 					}
 
 					break;
-				case SQL::DROP:
+				case queryTypes::DROP:
 					if (\func_num_args() == 2) {
 						$table = \func_get_arg(1);
 						
 						return "DROP TABLE IF EXISTS `$table`;";
 					}
 					else {
-						throw new Exception('The function expects 1 parameter but it receives ' . \func_num_args() . ' parameters.');
+						throw new \Exception('The function expects 2 params but it receives ' . \func_num_args());
 					}
 
 					break;
-				case SQL::TRUNCATE:
+				case queryTypes::TRUNCATE:
 					if (\func_num_args() == 2) {
 						$table = \func_get_arg(1);
 						
 						return "TRUNCATE TABLE `$table`;";
 					}
 					else {
-						throw new Exception('The function expects 1 parameter but it receives ' . \func_num_args() . ' parameters.');
+						throw new \Exception('The function expects 2 params but it receives ' . \func_num_args());
 					}
 
 					break;
-				case SQL::DELETE:
-					if (\func_num_args() == 2 || \func_num_args() == 3) {
+				case queryTypes::DELETE:
+					if (\func_num_args() == 3) {
 						$from = \func_get_arg(1);
-						# if the 2nd param exist $where will receive its value, else it'll receive null
-						$where = (\func_num_args() == 3) ? \func_get_arg(2) : null;
+						$where = \func_get_arg(2);
 
-						return ($where != null) ? "DELETE FROM `$from` WHERE $where;" : "DELETE FROM `$from`;";
+						return "DELETE FROM `$from` WHERE $where;";
 					}
 					else {
-						throw new Exception('The function expects 1 or 2 parameters but it receives ' . \func_num_args() . ' parameters.');
+						throw new \Exception('The function expects 3 params but it receives ' . \func_num_args());
 					}
+
 					break;
 			}
 		}
 
 		# query functions
 		public function select(string $from, string $what = '*', string $where = null) : object {
-			return $this->connection->query(generate(SQL::SELECT, "$from", "$what", ($where == null) ? null : "$where"));
+			return $this->connection->query($this->buildQuery(queryTypes::SELECT, "$from", "$what", ($where == null) ? null : "$where"));
 		}
 	
 		public function count(string $from, string $what = '*', string $where = null) : object {
-			return $this->connection->query(generate(SQL::COUNT, "$from", "$what", ($where == null) ? null : "$where"));
+			return $this->connection->query($this->buildQuery(queryTypes::COUNT, "$from", "$what", ($where == null) ? null : "$where"));
 		}
 	
 		public function insert(string $table, string $what, string $values) : void {
-			$this->connection->query(generate(SQL::INSERT, "$table", "$what", "$values"));
+			$this->connection->query($this->buildQuery(queryTypes::INSERT, "$table", "$what", "$values"));
 		}
 
 		public function create(string $table, string $columns) : void {
-			$this->connection->query(generate(SQL::CREATE, "$table", "$columns"));
+			$this->connection->query($this->buildQuery(queryTypes::CREATE, "$table", "$columns"));
 		}
 
 		public function drop(string $table) : void {
-			$this->connection->query(generate(SQL::DROP, "$table"));
+			$this->connection->query($this->buildQuery(queryTypes::DROP, "$table"));
 		}
 
 		public function truncate(string $table) : void {
-			$this->connection->query(generate(SQL::TRUNCATE, "$table"));
+			$this->connection->query($this->buildQuery(queryTypes::TRUNCATE, "$table"));
 		}
 
 		public function delete(string $table, $where = null) : void {
-			$this->connection->query(generate(SQL::DELETE, "$table", ($where == null) ? null : "$where"));
+			$this->connection->query($this->buildQuery(queryTypes::DELETE, "$table", ($where == null) ? null : "$where"));
 		}
 
 		# SQL functions
@@ -155,7 +155,7 @@
 
 		# prevent function (to prevent SQL injection)
 		public function prevent(string $value) : string {
-			return \mysqli_escape_string($this->mysqli, $value);
+			return \mysqli_escape_string($this->connection, $value);
 		}
 	}
 ?>

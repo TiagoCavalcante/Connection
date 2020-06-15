@@ -1,7 +1,7 @@
 <?php
 	namespace Connection;
 
-	final class SQL {
+	final class queryTypes {
 		# consts
 		const SELECT = 'select';
 		const COUNT = 'count';
@@ -21,7 +21,7 @@
 
 		# functions
 		# generate function (to generate the SQL code)
-		abstract public function generate(SQL $type) : string;
+		abstract protected function buildQuery(string $type) : string;
 		# query functions
 		abstract public function select(string $from, string $what = '*', string $where = null) : object;
 		abstract public function count(string $from, string $what = '*', string $where = null) : object;
@@ -31,7 +31,5 @@
 		abstract public function truncate(string $table) : void;
 		# SQL functions
 		abstract public function affectedRows() : int;
-		# prevent function (to prevent SQL injection)
-		abstract public function prevent(string $value) : string;
 	}
 ?>
