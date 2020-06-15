@@ -14,12 +14,3 @@ To install you need to execute the command bellow:
 ```shell
 git submodule add https://github.com/TiagoCavalcanteTrindade/Connection
 ```
-## Commom issues
-1.	```markdown
-	Return value of `Connection\SQLite::select()` must be an `object`, `bool` returned
-	```
-	or
-	```markdown
-	Return value of `Connection\MySQL::select()` must be an `object`, `bool` returned
-	```
-	These errors occur because the table of the `select` doesn't exists
