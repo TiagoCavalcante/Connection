@@ -14,3 +14,25 @@ To install you need to execute the command bellow:
 ```shell
 git submodule add https://github.com/TiagoCavalcanteTrindade/Connection
 ```
+
+## Documentation
+The Documentation link goes [here](https://github.com/TiagoCavalcanteTrindade/Connection/wiki)
+
+## Tests
+### Before init
+Before init you need to create the files `MySQL.env.php` and `SQLite.env.php` in the folder `tests`.
+The file `MySQL.env.php` need to have the `env`s `host`, `user`, `password` and `database`, e.g.:
+```php
+<?php
+	putenv('host=localhost');
+	putenv('user=root');
+	putenv('password=');
+	putenv('database=database');
+?>
+```
+The file `SQLite.env.php` need to have the `env` `database`, e.g.:
+```php
+<?php
+	putenv('database=databases/database.sqlite3');
+?>
+```
