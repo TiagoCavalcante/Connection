@@ -6,7 +6,9 @@
 	
 	final class SQLite extends Connection {
 		# constructor
-		function __construct(string $database = DATABASE) {
+		function __construct(string $database = null) {
+			if ($database == null)
+				$database = \getenv('database');
 			# connect to database or have the value of a error
 			$this->connection = new \SQLite3($database);
 		}
@@ -58,6 +60,20 @@
 					}
 					else {
 						throw new \Exception('The function expects 4 params but it receives ' . \func_num_args());
+					}
+
+					break;
+				case queryTypes::UPDATE:
+					if (\func_num_args() == 3 || \func_num_args() == 4) {
+						$from = \func_get_arg(1);
+						$what = \func_get_arg(2);
+						# if the function receive 4 params $what will receive its values, else it'll receive null
+						$where = (\func_num_args() == 4) ? \func_get_arg(3) : null;
+						
+						return ($where != null) ? "UPDATE `$from` SET $what WHERE $where;" : "UPDATE `$from` SET $what;";
+					}
+					else {
+						throw new \Exception('The function expects 3 or 4 params but it receives ' . \func_num_args());
 					}
 
 					break;
@@ -122,6 +138,10 @@
 			$this->connection->exec($this->buildQuery(queryTypes::INSERT, "$table", "$what", "$values"));
 		}
 
+		public function update(string $from, string $what, string $where = null) : void {
+			$this->connection->exec($this->buildQuery(queryTypes::UPDATE, "$from", "$what", ($where != null) ? "$where" : null));
+		}
+
 		public function create(string $table, string $columns) : void {
 			$this->connection->exec($this->buildQuery(queryTypes::CREATE, "$table", "$columns"));
 		}
@@ -141,10 +161,6 @@
 		# SQL functions
 		public function nextResult(\SQLite3Result $result) {
 			return (gettype($result) != 'boolean') ? $result->fetchArray() : false;
-		}
-	
-		public function numRows(\SQLite3Result $result) : int {
-			return (gettype($result) != 'boolean') ? \sqlite_num_rows($result) : false;
 		}
 	
 		public function affectedRows() : int {

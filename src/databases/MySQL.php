@@ -5,7 +5,15 @@
 	
 	final class MySQL extends Connection {
 		# constructor
-		public function __construct(string $host = HOST, string $user = USER, string $password = PASSWORD, string $database = DATABASE) {
+		public function __construct(string $host = null, string $user = null, string $password = null, string $database = null) {
+			if ($host == null)
+				$host = \getenv('host');
+			if ($user == null)
+				$user = \getenv('user');
+			if ($password == null)
+				$password = \getenv('password');
+			if ($database == null)
+				$database = \getenv('database');
 			# connect to database or have the value of a error
 			$this->connection = new \mysqli($host, $user, $password, $database) or die(\mysqli_error());
 		}
@@ -56,6 +64,20 @@
 						$values = (\func_num_args() == 3) ? \func_get_arg(2) : \func_get_arg(3);
 						
 						return ($what != null) ? "INSERT INTO `$table` ($what) VALUES ($values);" : "INSERT INTO `$table` VALUES ($values);";
+					}
+					else {
+						throw new \Exception('The function expects 3 or 4 params but it receives ' . \func_num_args());
+					}
+
+					break;
+				case queryTypes::UPDATE:
+					if (\func_num_args() == 3 || \func_num_args() == 4) {
+						$from = \func_get_arg(1);
+						$what = \func_get_arg(2);
+						# if the function receive 4 params $what will receive its values, else it'll receive null
+						$where = (\func_num_args() == 4) ? \func_get_arg(3) : null;
+						
+						return ($where != null) ? "UPDATE `$from` SET $what WHERE $where;" : "UPDATE `$from` SET $what;";
 					}
 					else {
 						throw new \Exception('The function expects 3 or 4 params but it receives ' . \func_num_args());
@@ -119,9 +141,13 @@
 		public function count(string $from, string $what = '*', string $where = null) : object {
 			return $this->connection->query($this->buildQuery(queryTypes::COUNT, "$from", "$what", ($where == null) ? null : "$where"));
 		}
-	
+
 		public function insert(string $table, string $what, string $values) : void {
 			$this->connection->query($this->buildQuery(queryTypes::INSERT, "$table", "$what", "$values"));
+		}
+
+		public function update(string $from, string $what, string $where = null) : void {
+			$this->connection->query($this->buildQuery(queryTypes::UPDATE, "$from", "$what", ($where == null) ? null : "$where"));
 		}
 
 		public function create(string $table, string $columns) : void {
