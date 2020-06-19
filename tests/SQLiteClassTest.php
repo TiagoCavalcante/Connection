@@ -7,7 +7,9 @@
 			require_once 'src/databases/SQLite.php';
 
 			$this->connection = new Connection\SQLite();
-			$this->connection->create('test', '`text` TEXT');
+			$this->connection->create('test', [
+				'text' => 'TEXT'
+			]);
 		}
 
 		public function tearDown() : void {
