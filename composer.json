@@ -1,5 +1,5 @@
 {
-	"name": "vendor-name/connection",
+	"name": "connection/connection",
 	"description": "A PHP library that do SQL querys",
 	"authors": [
 		{
