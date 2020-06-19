@@ -7,7 +7,10 @@
 			require_once 'src/databases/MySQL.php';
 
 			$this->connection = new Connection\MySQL();
-			$this->connection->create('test', '`id` INT AUTO_INCREMENT, `text` TEXT, PRIMARY KEY (`id`)');
+			$this->connection->create('test', [
+				'id' => 'INT AUTO_INCREMENT PRIMARY KEY', 
+				'text' => 'TEXT'
+			]);
 		}
 
 		public function tearDown() : void {
@@ -85,7 +88,10 @@
 			
 			$this->assertEquals(-1, $this->connection->affectedRows());
 
-			$this->connection->create('test', '`id` INT AUTO_INCREMENT, `text` TEXT, PRIMARY KEY (`id`)');
+			$this->connection->create('test', [
+				'id' => 'INT AUTO_INCREMENT PRIMARY KEY',
+				'text' => 'TEXT'
+			]);
 			$this->connection->truncate('test');
 		}
 
@@ -182,7 +188,10 @@
 			$this->connection->insert('test', '`text`', "'Hello, world'");
 			$this->assertEquals(-1, $this->connection->affectedRows());
 
-			$this->connection->create('test', '`id` INT AUTO_INCREMENT, `text` TEXT, PRIMARY KEY (`id`)');
+			$this->connection->create('test', [
+				'id' => 'INT AUTO_INCREMENT PRIMARY KEY',
+				'text' => 'TEXT'
+			]);
 			$this->connection->insert('test', '`text`', "'Hello'");
 			
 			for ($i = 0; $i <= 9; $i++)
@@ -192,7 +201,10 @@
 
 			$this->assertEquals(10, $this->connection->affectedRows());
 
-			$this->connection->create('test', '`id` INT AUTO_INCREMENT, `text` TEXT, PRIMARY KEY (`id`)');
+			$this->connection->create('test', [
+				'id' => 'INT AUTO_INCREMENT PRIMARY KEY',
+				'text' => 'TEXT'
+			]);
 			$this->connection->truncate('test');
 		}
 	}

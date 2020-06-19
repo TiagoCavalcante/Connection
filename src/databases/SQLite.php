@@ -7,9 +7,8 @@
 	final class SQLite extends Connection {
 		# constructor
 		function __construct(string $database = null) {
-			if ($database == null)
-				$database = \getenv('database');
-			# connect to database or have the value of a error
+			$database = ($database == null) ? \getenv('database') : $database;
+
 			$this->connection = new \SQLite3($database);
 		}
 	
@@ -23,144 +22,112 @@
 		protected function buildQuery(string $type) : string {
 			switch ($type) {
 				case queryTypes::SELECT:
-					if (\func_num_args() == 2 || \func_num_args() == 3 || \func_num_args() == 4) {
-						$from = \func_get_arg(1);
-						# if the 3rd  param exist $what will receive its value, else it'll receive '*'
-						$what = (\func_num_args() >= 3) ? \func_get_arg(2) : '*';
-						# if the 4th param exist $where will receive its value, else it'll receive null
-						$where = (\func_num_args() == 4) ? \func_get_arg(3) : null;
-						
-						return ($where == null) ? "SELECT $what FROM `$from`;" : "SELECT $what FROM `$from` WHERE $where;";
-					}
-					else {
-						throw new \Exception('The function expects 2 to 4 params but it receives ' . \func_num_args());
-					}
+					$from = \func_get_arg(1);
+					$what = \func_get_args()[2] ?? '*';
+					$where = \func_get_args()[3] ?? null;
+					
+					return ($where == null) ? "SELECT $what FROM `$from`;" : "SELECT $what FROM `$from` WHERE $where;";
 
 					break;
 				case queryTypes::COUNT:
-					if (\func_num_args() == 2 || \func_num_args() == 3) {
-						$from = \func_get_arg(1);
-						# if the 3rd parameter exist $where will receive its value, else it'll receive null
-						$where = (\func_num_args() == 3) ? \func_get_arg(2) : null;
-						
-						return ($where != null) ? "SELECT COUNT(*) FROM `$from` WHERE $where;" : "SELECT COUNT(*) FROM `$from`;";
-					}
-					else {
-						throw new \Exception('The function expects 2 or 3 params but it receives ' . \func_num_args());
-					}
+					$from = \func_get_arg(1);
+					$where = \func_get_args()[2] ?? null;
+					
+					return ($where != null) ? "SELECT COUNT(*) FROM `$from` WHERE $where;" : "SELECT COUNT(*) FROM `$from`;";
 
 					break;
 				case queryTypes::INSERT:
-					if (\func_num_args() == 4) {
-						$table = \func_get_arg(1);
-						$what = \func_get_arg(2);
-						$values = \func_get_arg(3);
-						
-						return "INSERT INTO `$table` ($what) VALUES ($values);";
-					}
-					else {
-						throw new \Exception('The function expects 4 params but it receives ' . \func_num_args());
-					}
+					$table = \func_get_arg(1);
+					$what = \func_get_arg(2);
+					$values = \func_get_arg(3);
+					
+					return "INSERT INTO `$table` ($what) VALUES ($values);";
 
 					break;
 				case queryTypes::UPDATE:
-					if (\func_num_args() == 3 || \func_num_args() == 4) {
-						$from = \func_get_arg(1);
-						$what = \func_get_arg(2);
-						# if the function receive 4 params $what will receive its values, else it'll receive null
-						$where = (\func_num_args() == 4) ? \func_get_arg(3) : null;
-						
-						return ($where != null) ? "UPDATE `$from` SET $what WHERE $where;" : "UPDATE `$from` SET $what;";
-					}
-					else {
-						throw new \Exception('The function expects 3 or 4 params but it receives ' . \func_num_args());
-					}
+					$from = \func_get_arg(1);
+					$what = \func_get_arg(2);
+					$where = \func_get_args()[3] ?? null;
+					
+					return ($where != null) ? "UPDATE `$from` SET $what WHERE $where;" : "UPDATE `$from` SET $what;";
 
 					break;
 				case queryTypes::CREATE:
-					if (\func_num_args() == 3) {
-						$table = \func_get_arg(1);
-						$columns = \func_get_arg(2);
+					$table = \func_get_arg(1);
+					$columns = \func_get_arg(2);
+					
+					$query = "CREATE TABLE IF NOT EXISTS `$table` (";
+					
+					foreach ($columns as $columm => $value) {
+						$query .= "`$columm` $value";
 						
-						return "CREATE TABLE IF NOT EXISTS `$table` ($columns);";
+						# if $i isn't the last element of the array
+						if ($value != end($columns))
+							$query .= ',';
 					}
-					else {
-						throw new \Exception('The function expects 2 params but it receives ' . \func_num_args());
-					}
-
+					
+					$query .= ');';
+					
+					return $query;
+					
 					break;
 				case queryTypes::DROP:
-					if (\func_num_args() == 2) {
-						$table = \func_get_arg(1);
-						
-						return "DROP TABLE IF EXISTS `$table`;";
-					}
-					else {
-						throw new \Exception('The function expects 2 param but it receives ' . \func_num_args());
-					}
+					$table = \func_get_arg(1);
+					
+					return "DROP TABLE IF EXISTS `$table`;";
 
 					break;
 				case queryTypes::TRUNCATE:
-					if (\func_num_args() == 2) {
-						$table = \func_get_arg(1);
-						
-						return "DELETE FROM `$table`;";
-					}
-					else {
-						throw new \Exception('The function expects 2 param but it receives ' . \func_num_args());
-					}
+					$table = \func_get_arg(1);
+					
+					return "DELETE FROM `$table`;";
 
 					break;
 				case queryTypes::DELETE:
-					if (\func_num_args() == 3) {
-						$from = \func_get_arg(1);
-						$where = \func_get_arg(2);
+					$from = \func_get_arg(1);
+					$where = \func_get_arg(2);
 
-						return "DELETE FROM `$from` WHERE $where;";
-					}
-					else {
-						throw new \Exception('The function expects 3 params but it receives ' . \func_num_args());
-					}
+					return "DELETE FROM `$from` WHERE $where;";
 
 					break;
 			}
 		}
 		# query functions
 		public function select(string $from, string $what = '*', string $where = null) : object {
-			return $this->connection->query($this->buildQuery(queryTypes::SELECT, "$from", "$what", ($where == null) ? null : "$where"));
+			return $this->connection->query($this->buildQuery(queryTypes::SELECT, $from, $what, $where));
 		}
 	
 		public function count(string $from, string $where = null) : object {
-			return $this->connection->query($this->buildQuery(queryTypes::COUNT, "$from", ($where == null) ? null : "$where"));
+			return $this->connection->query($this->buildQuery(queryTypes::COUNT, $from, $where));
 		}
 	
 		public function insert(string $table, string $what, string $values) : void {
-			$this->connection->exec($this->buildQuery(queryTypes::INSERT, "$table", "$what", "$values"));
+			$this->connection->exec($this->buildQuery(queryTypes::INSERT, $table, $what, $values));
 		}
 
 		public function update(string $from, string $what, string $where = null) : void {
-			$this->connection->exec($this->buildQuery(queryTypes::UPDATE, "$from", "$what", ($where != null) ? "$where" : null));
+			$this->connection->exec($this->buildQuery(queryTypes::UPDATE, $from, $what, $where));
 		}
 
-		public function create(string $table, string $columns) : void {
-			$this->connection->exec($this->buildQuery(queryTypes::CREATE, "$table", "$columns"));
+		public function create(string $table, array $columns) : void {
+			$this->connection->exec($this->buildQuery(queryTypes::CREATE, $table, $columns));
 		}
 
 		public function drop(string $table) : void {
-			$this->connection->exec($this->buildQuery(queryTypes::DROP, "$table"));
+			$this->connection->exec($this->buildQuery(queryTypes::DROP, $table));
 		}
 
 		public function truncate(string $table) : void {
-			$this->connection->exec($this->buildQuery(queryTypes::TRUNCATE, "$table"));
+			$this->connection->exec($this->buildQuery(queryTypes::TRUNCATE, $table));
 		}
 
 		public function delete(string $table, string $where) : void {
-			$this->connection->exec($this->buildQuery(queryTypes::DELETE, "$table", "$where"));
+			$this->connection->exec($this->buildQuery(queryTypes::DELETE, $table, $where));
 		}
 	
 		# SQL functions
 		public function nextResult(\SQLite3Result $result) {
-			return (gettype($result) != 'boolean') ? $result->fetchArray() : false;
+			return $result->fetchArray();
 		}
 	
 		public function affectedRows() : int {
