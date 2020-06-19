@@ -136,14 +136,7 @@
 
 		# SQLite functions
 		public function prepare(string $type) : \SQLite3Stmt {
-			if (\func_num_args() == 2)
-				return $this->connection->prepare($this->buildQuery($type, \func_get_arg(1)));
-			elseif (\func_num_args() == 3)
-				return $this->connection->prepare($this->buildQuery($type, \func_get_arg(1), \func_get_arg(2)));
-			elseif (\func_num_args() == 4)
-				return $this->connection->prepare($this->buildQuery($type, \func_get_arg(1), \func_get_arg(2), \func_get_arg(3)));
-			else
-				throw new \Exception('The function expects 2, 3 or 4 params but it receives ' . func_num_args());
+			return $this->connection->prepare($this->buildQuery($type, \func_get_arg(1), \func_get_args()[2] ?? null, \func_get_args()[3] ?? null));
 		}
 	}
 ?>

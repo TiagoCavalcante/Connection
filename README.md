@@ -10,9 +10,46 @@ First, check if you meet all of the **prerequisites**, after it **install**
 #### SQLite prerequisites
 1. In the file `php.ini` (if it doesn't exists rename the file `php.ini-development` to `php.ini`) remove the `;` before the `extension=sqlite3` (it's probably in the line 942)
 ### Instalation
-To install you need to execute the command bellow:
+To install you need to execute the command bellow: (if you have Composer)
+```bash
+composer require connection/connection
+```
+And if you don't have Composer:
 ```bash
 git submodule add https://github.com/TiagoCavalcanteTrindade/Connection
+```
+### First sample
+```php
+<?php
+	require 'vendor/autoload.php';
+
+	# initialize the database
+	$conn = new Connection\SQLite('database.db');
+
+	# create the table `posts` with the fields `title` and `text`
+	$conn->create('posts', [
+		'title' => 'TEXT',
+		'text' => 'TEXT'
+	]);
+
+	for ($i = 0; $i <= 9; $i++)
+		# insert into the table `posts`
+		$conn->insert('posts', '`title`, `text`', '"Title", "Text"');
+
+	# select the rows of the table `posts`
+	$results = $conn->select('posts');
+
+	# select each result of the var $results
+	while ($result = $conn->nextResult($results))
+		echo "Title: {$result['title']}\nText: {$result['text']}";
+
+	# colse the connection (necessary for security)
+	$conn->close();
+?>
+```
+And to execute:
+```bash
+php filename.php
 ```
 
 ## Documentation
