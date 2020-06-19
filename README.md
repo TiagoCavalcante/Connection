@@ -21,7 +21,7 @@ The Documentation link goes [here](https://github.com/TiagoCavalcanteTrindade/Co
 ## Tests
 ### Before init
 Before init you need to execute the command bellow:
-```shell
+```bash
 composer install
 ```
 Before init you need to create the files `MySQL.env.php` and `SQLite.env.php` in the folder `tests`.
