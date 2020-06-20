@@ -1,7 +1,7 @@
 {
 	"name": "connection/connection",
 	"description": "A PHP library that do SQL querys",
-	"version": "1.2.5",
+	"version": "1.2.6",
 	"authors": [
 		{
 			"name": "Tiago Cavalcante Trindade",
