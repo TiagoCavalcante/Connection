@@ -1,15 +1,53 @@
 <?php
-	function requireFiles($dir) {
-		$files = scandir($dir);
-		unset($files[0]);
-		unset($files[1]);
-		foreach ($files as $file)
-			if (is_file($file) && pathinfo($file, PATHINFO_EXTENSION) == 'php')
-				require_once $file;
+	switch ($argv[1]) {
+		case 'new':
+			$file = fopen($argv[2], 'w');
+
+			fwrite($file, "<?php\n\trequire 'vendor/autoload.php';\n\n\t\$connection = new Connection\SQLite('databases/database.sqlite3');\n\n\t\$run = function() use (\$connection) {\n\t\t\$connection->create('posts', [\n\t\t\t'text' => 'TEXT'\n\t\t]);\n\t};\n\n\t\$back = function() {\n\t\t\$connection->drop('posts');\n\t};\n?>");
+
+			fclose($file);
+			break;
+		case 'run':
+			requireFiles($argv[2], 'r');
+			break;
+		case 'back':
+			requireFiles($argv[2], 'b');
+			break;
+		default:
+			throw new Exception('This option doesn\'t exist. Type the option help to get help.');
+	}
+	function requireFiles(string $dir, string $type) {
+		if (is_file($dir)) {
+			require_once $dir;
+
+			if ($type == 'r')
+				$run();
+			if ($type == 'b')
+				$back();
+
+			$connection->close();
+		}
+		else {
+			$files = scandir($dir);
+			unset($files[0]);
+			unset($files[1]);
+			foreach ($files as $file) {
+				if (is_file($file)) {
+					require_once $file;
+					
+					if ($type == 'r')
+						$run();
+					if ($type == 'b')
+						$back();
+
+					$connection->close();
+				}
+			}
+		}
 	}
 	
-	if (file_exists($argv[1] ?? 'migrations'))
-		requireFiles($argv[1] ?? 'migrations');
-	else
-		throw new Exception("The folder doesn't exists");
+	// if (file_exists($argv[1] ?? 'migrations'))
+		// requireFiles($argv[1] ?? 'migrations');
+	// else
+		// throw new Exception("The folder doesn't exists");
 ?>
