@@ -36,7 +36,7 @@
 			fclose($file);
 
 			$env = fopen('.env.php', 'w');
-			fwrite($env, "<?php\n\tputenv('database=../databases/database.sqlite3')");
+			fwrite($env, "<?php\n\tputenv('database=../databases/database.sqlite3');\n?>");
 			fclose($env);
 
 			break;
