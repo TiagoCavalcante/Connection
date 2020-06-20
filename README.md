@@ -16,7 +16,7 @@ composer require connection/connection
 ```
 And if you don't have Composer:
 ```bash
-git submodule add https://github.com/TiagoCavalcanteTrindade/Connection
+git clone https://github.com/TiagoCavalcanteTrindade/Connection
 ```
 ### First sample
 ```php
