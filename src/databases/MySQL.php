@@ -57,6 +57,25 @@
 					return ($where != null) ? "UPDATE `$from` SET $what WHERE $where;" : "UPDATE `$from` SET $what;";
 
 					break;
+				case queryTypes::CREATE:
+					$table = \func_get_arg(1);
+					$columns = \func_get_arg(2);
+					
+					$query = "CREATE TABLE IF NOT EXISTS `$table` (";
+					
+					foreach ($columns as $columm => $value) {
+						$query .= "`$columm` $value";
+						
+						# if $i isn't the last element of the array
+						if ($value != end($columns))
+							$query .= ',';
+					}
+					
+					$query .= ');';
+					
+					return $query;
+					
+					break;
 				case queryTypes::DROP:
 					$table = \func_get_arg(1);
 					
@@ -97,19 +116,7 @@
 		}
 
 		public function create(string $table, array $columns) : void {
-			$query = "CREATE TABLE IF NOT EXISTS `$table` (";
-
-			foreach ($columns as $columm => $value) {
-				$query .= "`$columm` $value";
-
-				# if $i isn't the last element of the array
-				if ($value != end($columns))
-					$query .= ',';
-			}
-
-			$query .= ');';
-
-			$this->connection->query($query);
+			$this->connection->query($this->buildQuery(queryTypes::CREATE, $table, $columns));
 		}
 
 		public function drop(string $table) : void {

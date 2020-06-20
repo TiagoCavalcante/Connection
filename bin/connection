@@ -32,10 +32,13 @@
 	switch ($argv[1]) {
 		case 'new':
 			$file = fopen((($argv[2] ?? 'migrations') == 'migrations') ? 'migrations' : $argv[2] . '.php', 'w');
-
-			fwrite($file, "<?php\n\trequire 'vendor/autoload.php';\n\n\t\$connection = new Connection\SQLite('databases/database.sqlite3');\n\n\t\$run = function() use (\$connection) {\n\t\t\$connection->create('posts', [\n\t\t\t'text' => 'TEXT'\n\t\t]);\n\t};\n\n\t\$back = function() {\n\t\t\$connection->drop('posts');\n\t};\n?>");
-
+			fwrite($file, "<?php\n\trequire '../vendor/autoload.php';\n\trequire '.env.php';\n\n\t\$connection = new Connection\SQLite();\n\n\t\$run = function() use (\$connection) {\n\t\t\$connection->create('posts', [\n\t\t\t'text' => 'TEXT'\n\t\t]);\n\t};\n\n\t\$back = function() {\n\t\t\$connection->drop('posts');\n\t};\n?>");
 			fclose($file);
+
+			$env = fopen('.env.php', 'w');
+			fwrite($env, "<?php\n\tputenv('database=../databases/database.sqlite3')");
+			fclose($env);
+
 			break;
 		case 'run':
 			requireFiles((($argv[2] ?? 'migrations') == 'migrations') ? 'migrations' : $argv[2] . '.php', 'r');
