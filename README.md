@@ -44,7 +44,8 @@ git clone https://github.com/TiagoCavalcanteTrindade/Connection
 
 	# select each result of the var $results
 	while ($result = $conn->nextResult($results))
-		echo "Title: {$result['title']}\nText: {$result['text']}";
+		# echo the `title` and the `text` of a post
+		echo "Title: {$result['title']}\nText: {$result['text']}\n";
 
 	# colse the connection (necessary for security)
 	$conn->close();
