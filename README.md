@@ -10,7 +10,7 @@ First, check if you meet all of the **prerequisites**, after it **install**
 #### SQLite prerequisites
 1. In the file `php.ini` (if it doesn't exists rename the file `php.ini-development` to `php.ini`) remove the `;` before the `extension=sqlite3` (it's probably in the line 942)
 #### PostgreSQL prerequisites
-1. Install the PostgreSQL and configure it or crete a Psotgre database on (Heroku)[https://data.heroku.com/]
+1. Install the PostgreSQL and configure it or crete a Psotgre database on [Heroku](https://data.heroku.com/)
 2. In the file `php.ini` (if it doesn't exists rename the file `php.ini-development` to `php.ini`) remove the `;` before the `extension=pdo_pgsql` (it's probably in the line 930)
 ### Instalation
 To install you need to execute the command bellow: (if you have Composer)
