@@ -4,17 +4,21 @@
 	# requires
 	require_once __DIR__ . '/../Connection.php';
 	
-	final class SQLite extends Connection {
+	final class PgSQL extends Connection {
 		# constructor
-		function __construct(string $database = null) {
+		function __construct(string $host = null, string $user = null, string $password = null, string $database = null, string $port = null) {
+			$host = ($host == null) ? \getenv('host') : $host;
+			$user = ($user == null) ? \getenv('user') : $user;
+			$password = ($password == null) ? \getenv('password') : $password;
 			$database = ($database == null) ? \getenv('database') : $database;
+			$port = ($port == null) ? \getenv('port') : $port;
 
-			$this->connection = new \SQLite3($database);
+			$this->connection = new \PDO("pgsql:host=$host;dbname=$database;port=$port;user=$user;password=$password");
 		}
 	
 		# closer
 		function close() : void {
-			$this->connection->close();
+			$this->connection = null;
 		}
 	
 		# functions
@@ -26,14 +30,15 @@
 					$what = \func_get_args()[2] ?? '*';
 					$where = \func_get_args()[3] ?? null;
 					
-					return ($where == null) ? "SELECT $what FROM `$from`;" : "SELECT $what FROM `$from` WHERE $where;";
+					return ($where == null) ? "SELECT $what FROM $from;" : "SELECT $what FROM $from WHERE $where;";
 
 					break;
 				case queryTypes::COUNT:
 					$from = \func_get_arg(1);
-					$where = \func_get_args()[2] ?? null;
-					
-					return ($where != null) ? "SELECT COUNT(*) FROM `$from` WHERE $where;" : "SELECT COUNT(*) FROM `$from`;";
+					$what = \func_get_arg(2);
+					$where = \func_get_arg(3) ?? null;
+
+					return ($where != null) ? "SELECT COUNT(*) FROM $from WHERE $where;" : "SELECT COUNT(*) FROM $from;";
 
 					break;
 				case queryTypes::INSERT:
@@ -41,7 +46,7 @@
 					$what = \func_get_arg(2);
 					$values = \func_get_arg(3);
 					
-					return "INSERT INTO `$table` ($what) VALUES ($values);";
+					return "INSERT INTO $table ($what) VALUES ($values);";
 
 					break;
 				case queryTypes::UPDATE:
@@ -49,17 +54,17 @@
 					$what = \func_get_arg(2);
 					$where = \func_get_args()[3] ?? null;
 					
-					return ($where != null) ? "UPDATE `$from` SET $what WHERE $where;" : "UPDATE `$from` SET $what;";
+					return ($where != null) ? "UPDATE $from SET $what WHERE $where;" : "UPDATE $from SET $what;";
 
 					break;
 				case queryTypes::CREATE:
 					$table = \func_get_arg(1);
 					$columns = \func_get_arg(2);
 					
-					$query = "CREATE TABLE IF NOT EXISTS `$table` (";
+					$query = "CREATE TABLE IF NOT EXISTS $table (";
 					
 					foreach ($columns as $columm => $value) {
-						$query .= "`$columm` $value";
+						$query .= "$columm $value";
 						
 						# if $i isn't the last element of the array
 						if ($value != end($columns))
@@ -74,20 +79,20 @@
 				case queryTypes::DROP:
 					$table = \func_get_arg(1);
 					
-					return "DROP TABLE IF EXISTS `$table`;";
+					return "DROP TABLE IF EXISTS $table;";
 
 					break;
 				case queryTypes::TRUNCATE:
 					$table = \func_get_arg(1);
 					
-					return "DELETE FROM `$table`;";
+					return "TRUNCATE $table;";
 
 					break;
 				case queryTypes::DELETE:
 					$from = \func_get_arg(1);
 					$where = \func_get_arg(2);
 
-					return "DELETE FROM `$from` WHERE $where;";
+					return "DELETE FROM $from WHERE $where;";
 
 					break;
 			}
@@ -98,7 +103,7 @@
 		}
 	
 		public function count(string $from, string $what = '*', string $where = null) : object {
-			return $this->connection->query($this->buildQuery(queryTypes::COUNT, $from, $where));
+			return $this->connection->query($this->buildQuery(queryTypes::COUNT, $from, $what, $where));
 		}
 	
 		public function insert(string $table, string $what, string $values) : void {
@@ -124,18 +129,14 @@
 		public function delete(string $table, string $where) : void {
 			$this->connection->exec($this->buildQuery(queryTypes::DELETE, $table, $where));
 		}
-	
+
 		# SQL functions
-		public function nextResult(\SQLite3Result $result) {
-			return $result->fetchArray();
-		}
-	
-		public function affectedRows() : int {
-			return $this->connection->changes();
+		public function affectedRows(\PDOStatement $result) : int {
+			return $result->rowCount();
 		}
 
-		# SQLite functions
-		public function prepare(string $type) : \SQLite3Stmt {
+		# PostgreSQL functions
+		public function prepare(string $type) : \PDOStatement {
 			return $this->connection->prepare($this->buildQuery($type, \func_get_arg(1), \func_get_args()[2] ?? null, \func_get_args()[3] ?? null));
 		}
 	}
