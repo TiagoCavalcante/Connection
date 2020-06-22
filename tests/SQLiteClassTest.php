@@ -72,7 +72,7 @@
 			for ($i = 0; $i <= 9; $i++)
 				$this->connection->insert('test', '`text`', "'Hello, $i'");
 			
-			$result = $this->connection->count('test', "`text` = 'Hello, world'");
+			$result = $this->connection->count('test', '*', "`text` = 'Hello, world'");
 			$result = $this->connection->nextResult($result);
 			$result = $result['COUNT(*)'];
 
@@ -147,7 +147,6 @@
 			$prepare->bindValue(':text', 'I\'m fine');
 			$prepare->execute();
 
-			$results = [];
 			$result = $this->connection->select('test', '`text`');
 			$result = $this->connection->nextResult($result);
 			$result = $result['text'];
