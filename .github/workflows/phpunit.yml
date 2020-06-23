@@ -24,10 +24,15 @@ jobs:
         key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
         restore-keys: |
           ${{ runner.os }}-php-
-
-    - name: Install dependencies
-      if: steps.composer-cache.outputs.cache-hit != 'true'
-      run: composer install --prefer-dist --no-progress --no-suggest
+    
+    #- name: Install dependencies
+    #  if: steps.composer-cache.outputs.cache-hit != 'true'
+    #  run: composer install --prefer-dist --no-progress --no-suggest
       
-    - name: Run test suite
-      run: composer exec phpunit tests
+    #- name: Run PgSQL tests
+    #  run: echo "<?php putenv('host='); putenv(''); putenv(''); putenv(''); putenv('port=');?>" >  && composer exec phpunit tests/PgSQLClassTest.php
+      
+   # - name: Run SQLite tests
+   #   run: composer exec phpunit tests/SQLiteClassTest.php
+   # - name: ls
+   #   run: ls
