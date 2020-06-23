@@ -65,7 +65,7 @@ Before init you need to execute the command bellow:
 ```bash
 composer install
 ```
-Before init you need to create the files `MySQL.env.php` and `SQLite.env.php` in the folder `tests`.
+Before init you need to create the files `MySQL.env.php`, `PgSQL.env.php` and `SQLite.env.php` in the folder `tests`.
 The file `MySQL.env.php` need to have the `env`s `host`, `user`, `password` and `database`, e.g.:
 ```php
 <?php
@@ -75,6 +75,16 @@ The file `MySQL.env.php` need to have the `env`s `host`, `user`, `password` and 
 	putenv('database=database');
 ?>
 ```
+The file `PgSQL.env.php` need to have the `env`s `host`, `user`, `password`, `database` and `port`, e.g.:
+```php
+<?php
+	putenv('host=localhost');
+	putenv('user=root');
+	putenv('password=');
+	putenv('database=tests');
+	putenv('port=5432');
+?>
+```
 The file `SQLite.env.php` need to have the `env` `database`, e.g.:
 ```php
 <?php
@@ -82,11 +92,19 @@ The file `SQLite.env.php` need to have the `env` `database`, e.g.:
 ?>
 ```
 ### Execute the tests
-* If you're on Linux execute the command bellow: (it's necessary execute this on the project root folder):
+* Execute all tests:
   ```bash
-  ./vendor/bin/phpunit tests
+  composer exec phpunit tests
   ```
-* If you're on Windows execute the command bellow: (it's necessary execute this command on the project root folder):
+* Execute MySQL tests:
   ```bash
-  call vendor/bin/phpunit tests
+  composer exec phpunit tests/MySQLClassTest.php
+  ```
+* Execute PgSLQ tests:
+  ```bash
+  composer exec phpunit tests/PgSQLClassTest.php
+  ```
+* Execute SQLite tests:
+  ```bash
+  composer exec phpunit tests/SQLiteClassTest.php
   ```
