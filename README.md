@@ -96,15 +96,27 @@ The file `SQLite.env.php` need to have the `env` `database`, e.g.:
   ```bash
   composer exec phpunit tests
   ```
-* Execute MySQL tests:
+* Execute `autoload.php` tests:
+  ```bash
+  composer exec phpunit tests/AutoloadFileTest.php
+  ```
+* Execute `MySQL` tests:
   ```bash
   composer exec phpunit tests/MySQLClassTest.php
   ```
-* Execute PgSLQ tests:
+* Execute `PgSLQ` tests:
   ```bash
   composer exec phpunit tests/PgSQLClassTest.php
   ```
-* Execute SQLite tests:
+* Execute `SQLite` tests:
   ```bash
   composer exec phpunit tests/SQLiteClassTest.php
+  ```
+* If you want to know where are the errors of a test run: (if you're on Linux)
+  ```bash
+  ./vendor/bin/phpunit [folder or file that you want to execute the tests]
+  ```
+  (if you're on Windows)
+  ```bash
+  call vendor/bin/phpunit [folder or file that you want to execute the tests]
   ```
