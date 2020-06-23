@@ -28,7 +28,7 @@
 			for ($i = 0; $i <= 9; $i++)
 				$this->connection->insert('test', 'text', "'Hello, world'");
 			$results = [];
-			foreach ($this->connection->select('test') as $res)
+			foreach ($this->connection->select('test', 'text') as $res)
 				$results[] = $res['text'];
 
 			$this->assertCount(10, $results);
@@ -40,7 +40,7 @@
 			for ($i = 0; $i <= 9; $i++)
 				$this->connection->insert('test', 'text', "'Hello, $i'");
 
-			foreach ($this->connection->select('test', '*', "text = 'Hello, 1'") as $res)
+			foreach ($this->connection->select('test', 'text', "text = 'Hello, 1'") as $res)
 				$result = $res['text'];
 
 			$this->assertEquals('Hello, 1', $result);
@@ -109,7 +109,7 @@
 			
 			$result = $this->connection->update('test', "text = 'Hello, you'");
 
-			foreach ($this->connection->select('test') as $res)
+			foreach ($this->connection->select('test', 'text') as $res)
 				$this->assertEquals('Hello, you', $res['text']);
 
 			$this->connection->truncate('test');
