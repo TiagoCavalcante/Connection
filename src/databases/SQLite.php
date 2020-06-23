@@ -58,12 +58,15 @@
 					
 					$query = "CREATE TABLE IF NOT EXISTS `$table` (";
 					
+					$i = 0;
 					foreach ($columns as $columm => $value) {
 						$query .= "`$columm` $value";
 						
-						# if $i isn't the last element of the array
-						if ($value != end($columns))
+						# if it isn't the last element of the array
+						if ($i != count($columns) - 1)
 							$query .= ',';
+							
+						$i++;
 					}
 					
 					$query .= ');';
