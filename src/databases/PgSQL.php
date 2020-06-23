@@ -61,16 +61,16 @@
 					$table = \func_get_arg(1);
 					$columns = \func_get_arg(2);
 					
-					$query = "CREATE TABLE IF NOT EXISTS `$table` (";
+					$query = "CREATE TABLE IF NOT EXISTS $table (";
 					
 					$i = 0;
 					foreach ($columns as $columm => $value) {
-						$query .= "`$columm` $value";
+						$query .= "$columm $value";
 						
 						# if it isn't the last element of the array
 						if ($i != count($columns) - 1)
 							$query .= ',';
-							
+
 						$i++;
 					}
 					
