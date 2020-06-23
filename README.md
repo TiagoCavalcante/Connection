@@ -1,5 +1,5 @@
 # Connection
-A PHP library that do SQL querys
+A PHP library that do SQL querys in PHP format
 
 ## Getting started
 First, check if you meet all of the **prerequisites**, after it **install**
