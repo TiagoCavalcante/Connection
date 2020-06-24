@@ -20,9 +20,6 @@ jobs:
         key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
         restore-keys: |
           ${{ runner.os }}-php-
-      
-    - name: Run autoload.php tests
-      run: composer exec phpunit tests/AutoloadFileTest.php
 
     - name: Create the PgSQL.env.php file
       env:
