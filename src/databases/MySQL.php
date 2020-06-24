@@ -1,7 +1,7 @@
 <?php
 	namespace Connection;
 	
-	require_once __DIR__ . '/../Connection.php';
+	require_once __DIR__ . '/../index.php';
 	
 	final class MySQL extends Connection {
 		# constructor

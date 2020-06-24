@@ -13,7 +13,7 @@
 	"bin": "bin/connection",
 	"autoload": {
 		"files": [
-			"src/Connection.php",
+			"src/migrations/index.php",
 			"src/databases/MySQL.php",
 			"src/databases/PgSQL.php",
 			"src/databases/SQLite.php"

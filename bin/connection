@@ -1,54 +1,22 @@
 <?php
-	function requireFiles(string $dir, string $type) {
-		if (is_file($dir)) {
-			require_once $dir;
-
-			if ($type == 'r')
-				$run();
-			if ($type == 'b')
-				$back();
-
-			$connection->close();
-		}
-		else {
-			$files = scandir($dir);
-			unset($files[0]);
-			unset($files[1]);
-			foreach ($files as $file) {
-				if (is_file($file)) {
-					require_once $file;
-					
-					if ($type == 'r')
-						$run();
-					if ($type == 'b')
-						$back();
-
-					$connection->close();
-				}
-			}
-		}
-	}
+	require_once __DIR__ . '/../vendor/autoload.php';
 
 	switch ($argv[1]) {
 		case 'new':
-			$file = fopen('migartions/' . $argv[2] . '.php', 'w');
-			fwrite($file, "<?php\n\trequire __DIR__ . '/../vendor/autoload.php';\n\trequire __DIR__ . '/../.env.php';\n\n\t\$connection = new Connection\SQLite();\n\n\t\$run = function() use (\$connection) {\n\t\t\$connection->create('posts', [\n\t\t\t'text' => 'TEXT'\n\t\t]);\n\t};\n\n\t\$back = function() {\n\t\t\$connection->drop('posts');\n\t};\n?>");
-			fclose($file);
-
-			if (!file_exists('.env.php')) {
-				$env = fopen('.env.php', 'w');
-				fwrite($env, "<?php\n\tputenv('database=../databases/database.sqlite3');\n?>");
-				fclose($env);
-			}
+			Connection\Migrations::new($argv[2] . '.php');
 
 			break;
 		case 'run':
-			requireFiles('migartions' . $argv[2] . '.php', 'r');
+			Connection\Migrations::run($argv[2] . '.php');
+
 			break;
 		case 'back':
-			requireFiles('migartions' . $argv[2] . '.php', 'b');
+			Connection\Migrations::back($argv[2] . '.php');
+
 			break;
 		default:
 			throw new Exception('This option doesn\'t exist. Type the option help to get help.');
+
+			break;
 	}
 ?>
