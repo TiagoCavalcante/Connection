@@ -31,7 +31,7 @@
 
 	switch ($argv[1]) {
 		case 'new':
-			$file = fopen('migartions' . $argv[2] . '.php', 'w');
+			$file = fopen('migartions/' . $argv[2] . '.php', 'w');
 			fwrite($file, "<?php\n\trequire __DIR__ . '/../vendor/autoload.php';\n\trequire __DIR__ . '/../.env.php';\n\n\t\$connection = new Connection\SQLite();\n\n\t\$run = function() use (\$connection) {\n\t\t\$connection->create('posts', [\n\t\t\t'text' => 'TEXT'\n\t\t]);\n\t};\n\n\t\$back = function() {\n\t\t\$connection->drop('posts');\n\t};\n?>");
 			fclose($file);
 
