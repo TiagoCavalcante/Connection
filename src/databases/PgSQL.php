@@ -65,7 +65,10 @@
 					
 					$i = 0;
 					foreach ($columns as $columm => $value) {
-						$query .= "$columm $value";
+						if (\is_numeric($columm))
+							$query .= "$value";
+						else
+							$query .= "$columm $value";
 						
 						# if it isn't the last element of the array
 						if ($i != count($columns) - 1)
