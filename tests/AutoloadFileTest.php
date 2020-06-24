@@ -4,6 +4,10 @@
 			require_once __DIR__ . '/../vendor/autoload.php';
 		}
 
+		public function testMigrationsClassExist() : void {
+			$this->assertTrue(\class_exists('Connection\Migrations'));
+		}
+
 		public function testMySQLClassExist() : void {
 			$this->assertTrue(\class_exists('Connection\MySQL'));
 		}
