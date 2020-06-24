@@ -31,20 +31,22 @@
 
 	switch ($argv[1]) {
 		case 'new':
-			$file = fopen((($argv[2] ?? 'migrations') == 'migrations') ? 'migrations' : $argv[2] . '.php', 'w');
-			fwrite($file, "<?php\n\trequire '../vendor/autoload.php';\n\trequire '.env.php';\n\n\t\$connection = new Connection\SQLite();\n\n\t\$run = function() use (\$connection) {\n\t\t\$connection->create('posts', [\n\t\t\t'text' => 'TEXT'\n\t\t]);\n\t};\n\n\t\$back = function() {\n\t\t\$connection->drop('posts');\n\t};\n?>");
+			$file = fopen('migartions' . $argv[2] . '.php', 'w');
+			fwrite($file, "<?php\n\trequire __DIR__ . '/../vendor/autoload.php';\n\trequire __DIR__ . '/../.env.php';\n\n\t\$connection = new Connection\SQLite();\n\n\t\$run = function() use (\$connection) {\n\t\t\$connection->create('posts', [\n\t\t\t'text' => 'TEXT'\n\t\t]);\n\t};\n\n\t\$back = function() {\n\t\t\$connection->drop('posts');\n\t};\n?>");
 			fclose($file);
 
-			$env = fopen('.env.php', 'w');
-			fwrite($env, "<?php\n\tputenv('database=../databases/database.sqlite3');\n?>");
-			fclose($env);
+			if (!file_exists('.env.php')) {
+				$env = fopen('.env.php', 'w');
+				fwrite($env, "<?php\n\tputenv('database=../databases/database.sqlite3');\n?>");
+				fclose($env);
+			}
 
 			break;
 		case 'run':
-			requireFiles((($argv[2] ?? 'migrations') == 'migrations') ? 'migrations' : $argv[2] . '.php', 'r');
+			requireFiles('migartions' . $argv[2] . '.php', 'r');
 			break;
 		case 'back':
-			requireFiles((($argv[2] ?? 'migrations') == 'migrations') ? 'migrations' : $argv[2] . '.php', 'b');
+			requireFiles('migartions' . $argv[2] . '.php', 'b');
 			break;
 		default:
 			throw new Exception('This option doesn\'t exist. Type the option help to get help.');
