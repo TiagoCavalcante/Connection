@@ -20,11 +20,10 @@ jobs:
         key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
         restore-keys: |
           ${{ runner.os }}-php-
-    
-    - name: Install dependencies
-      if: steps.composer-cache.outputs.cache-hit != 'true'
-      run: composer install --prefer-dist --no-progress --no-suggest
       
+    - name: Run autoload.php tests
+      run: composer exec phpunit tests/AutoloadFileTest.php
+
     - name: Create the PgSQL.env.php file
       env:
         database: ${{ secrets.PGSQL_DATABASE }}
@@ -34,12 +33,6 @@ jobs:
         user: ${{ secrets.PGSQL_USER }}
       run: echo "<?php putenv('host=$host'); putenv('user=$user'); putenv('password=$password'); putenv('database=$database'); putenv('port=$port');" > tests/PgSQL.env.php
     - name: Run PgSQL tests
-      env:
-        database: ${{ secrets.PGSQL_DATABASE }}
-        host: ${{ secrets.PGSQL_HOST }}
-        password: ${{ secrets.PGSQL_PASSWORD }}
-        port: ${{ secrets.PGSQL_PORT }}
-        user: ${{ secrets.PGSQL_USER }}
       run: composer exec phpunit tests/PgSQLClassTest.php
       
     - name: Create the SQLite.env.php file
@@ -47,6 +40,8 @@ jobs:
         database: 'database.sqlite3'
       run: echo "<?php putenv('database=$database');" > tests/SQLite.env.php
     - name: Run SQLite tests
-      env:
-        database: 'database.sqlite3'
       run: composer exec phpunit tests/SQLiteClassTest.php
+
+    - name: Install dependencies
+      if: steps.composer-cache.outputs.cache-hit != 'true'
+      run: composer install --prefer-dist --no-progress --no-suggest
