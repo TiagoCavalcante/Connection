@@ -22,7 +22,7 @@
 
 		# functions
 		# generate function (to generate the SQL code)
-		abstract protected function buildQuery(string $type) : string;
+		abstract protected function buildQuery(array $args) : string;
 		# query functions
 		abstract public function select(string $from, string $what = '*', string $where = null) : object;
 		abstract public function count(string $from, string $what = '*', string $where = null) : object;
