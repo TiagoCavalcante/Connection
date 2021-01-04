@@ -10,7 +10,7 @@
 			$user = ($user == null) ? \getenv('user') : $user;
 			$password = ($password == null) ? \getenv('password') : $password;
 			$database = ($database == null) ? \getenv('database') : $database;
-			$port = ($port == null) ? (\getenv('port') ? (int) \getenv('port') : 3306) : $port;
+			$port = ($port == null) ? (int) \getenv('port') : $port;
 
 			# connect to database or have the value of a error
 			$this->connection = new \mysqli($host, $user, $password, $database, $port) or die(\mysqli_error());
