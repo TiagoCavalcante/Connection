@@ -5,14 +5,15 @@
 	
 	final class MySQL extends Connection {
 		# constructor
-		public function __construct(string $host = null, string $user = null, string $password = null, string $database = null) {
+		public function __construct(string $host = null, string $user = null, string $password = null, string $database = null, string $port = null) {
 			$host = ($host == null) ? \getenv('host') : $host;
 			$user = ($user == null) ? \getenv('user') : $user;
 			$password = ($password == null) ? \getenv('password') : $password;
 			$database = ($database == null) ? \getenv('database') : $database;
+			$port = ($port == null) ? (\getenv('port') ? (int) \getenv('port') : 3306) : $port;
 
 			# connect to database or have the value of a error
-			$this->connection = new \mysqli($host, $user, $password, $database) or die(\mysqli_error());
+			$this->connection = new \mysqli($host, $user, $password, $database, $port) or die(\mysqli_error());
 		}
 	
 		# closer
