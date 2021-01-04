@@ -56,9 +56,6 @@ And to execute:
 php filename.php
 ```
 
-## Documentation
-The Documentation link goes [here](https://github.com/TiagoCavalcanteTrindade/Connection/wiki)
-
 ## Tests
 ### Before init
 Before init you need to execute the command bellow:
@@ -120,3 +117,6 @@ The file `SQLite.env.php` need to have the `env` `database`, e.g.:
   ```bash
   call vendor/bin/phpunit [folder or file that you want to execute the tests]
   ```
+
+## Documentation
+Access the [documentation](https://github.com/TiagoCavalcanteTrindade/Connection/wiki)
