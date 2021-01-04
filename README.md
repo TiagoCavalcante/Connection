@@ -4,13 +4,13 @@ A PHP library that do SQL querys in PHP format
 ## Getting started
 First, check if you meet all of the **prerequisites**, after it **install**
 ### Prerequisites
-#### MySQL prerequisites
-1. Install the MySQL and configure it
+#### MySQL/MariaDB prerequisites
+1. Install `MySQL`/`MariaDB` and configure it
 2. In the file `php.ini` (if it doesn't exists rename the file `php.ini-development` to `php.ini`) remove the `;` before the `extension=mysqli` (it's probably in the line 922)
 #### SQLite prerequisites
 1. In the file `php.ini` (if it doesn't exists rename the file `php.ini-development` to `php.ini`) remove the `;` before the `extension=sqlite3` (it's probably in the line 942)
 #### PostgreSQL prerequisites
-1. Install the PostgreSQL and configure it or crete a Psotgre database on [Heroku](https://data.heroku.com/)
+1. Install `PostgreSQL` and configure it or crete a `PostgreSQL` database on [Heroku](https://data.heroku.com/)
 2. In the file `php.ini` (if it doesn't exists rename the file `php.ini-development` to `php.ini`) remove the `;` before the `extension=pdo_pgsql` (it's probably in the line 930)
 ### Instalation
 To install you need to execute the command bellow: (if you have Composer)
@@ -100,7 +100,7 @@ The file `SQLite.env.php` need to have the `env` `database`, e.g.:
   ```bash
   composer exec phpunit tests/AutoloadFileTest.php
   ```
-* Execute `MySQL` tests:
+* Execute `MySQL`/`MariDB` tests:
   ```bash
   composer exec phpunit tests/MySQLClassTest.php
   ```
