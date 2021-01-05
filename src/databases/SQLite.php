@@ -10,6 +10,7 @@
 			$database = ($database == null) ? \getenv('database') : $database;
 
 			$this->connection = new \PDO("sqlite:$database");
+			$this->connection->setAttribute(\PDO::ATTR_EMULATE_PREPARES, false);
 		}
 	
 		# closer
