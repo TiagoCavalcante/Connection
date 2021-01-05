@@ -15,6 +15,7 @@
 
 		public function tearDown() : void {
 			$this->connection->drop('test');
+			$this->connection->close();
 		}
 
 		public function testCanDoAInsert() : void {

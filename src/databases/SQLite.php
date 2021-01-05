@@ -12,10 +12,10 @@
 			$this->connection = new \PDO("sqlite:$database");
 			$this->connection->setAttribute(\PDO::ATTR_EMULATE_PREPARES, false);
 		}
-	
+		
 		# closer
 		function close() : void {
-			$this->connection->close();
+			$this->connection = null;
 		}
 	
 		# functions
