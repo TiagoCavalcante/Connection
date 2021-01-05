@@ -9,7 +9,7 @@
 		function __construct(string $database = null) {
 			$database = ($database == null) ? \getenv('database') : $database;
 
-			$this->connection = new \SQLite3($database);
+			$this->connection = new \PDO("sqlite:$database");
 		}
 	
 		# closer
@@ -60,6 +60,11 @@
 					
 					$i = 0;
 					foreach ($columns as $columm => $value) {
+						# when contains 'PRIMARY' replace by PgSQL's primary key
+						if (strpos($value, ' PRIMARY') !== false) { # for PHP 8: if (str_contains($value, 'PRIMARY'))
+							$value = str_replace('INT PRIMARY', 'INTEGER PRIMARY KEY AUTOINCREMENT', $value);
+						}
+
 						if (\is_numeric($columm))
 							$query .= "$value";
 						else
@@ -132,16 +137,12 @@
 		}
 	
 		# SQL functions
-		public function nextResult(\SQLite3Result $result) {
-			return $result->fetchArray();
-		}
-	
-		public function affectedRows() : int {
-			return $this->connection->changes();
+		public function affectedRows(\PDOStatement $result) : int {
+			return $result->rowCount();
 		}
 
 		# SQLite functions
-		public function prepare(string $type) : \SQLite3Stmt {
+		public function prepare(string $type) : \PDOStatement {
 			return $this->connection->prepare($this->buildQuery(\func_get_args()));
 		}
 	}
