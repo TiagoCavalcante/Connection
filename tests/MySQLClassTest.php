@@ -19,20 +19,17 @@
 		}
 
 		public function testCanDoAInsert() : void {
-			$this->connection->insert('test', '`text`', "'Hello, world'");
-
-			$this->assertEquals(1, $this->connection->affectedRows());
+			$this->assertEquals(null, $this->connection->insert('test', 'text', "'Hello, world'"));
 
 			$this->connection->truncate('test');
 		}
 
 		public function testCanDoASelect() : void {
 			for ($i = 0; $i <= 9; $i++)
-				$this->connection->insert('test', '`text`', "'Hello, $i'");
-			$result = $this->connection->select('test', '`text`');
+				$this->connection->insert('test', 'text', "'Hello, world'");
 			$results = [];
-			while ($res = $this->connection->nextResult($result))
-				$results[] = $res['text'];
+			foreach ($this->connection->select('test', 'text') as $result)
+				$results[] = $result['text'];
 
 			$this->assertCount(10, $results);
 
@@ -41,12 +38,10 @@
 
 		public function testCanDoASelectWhere() : void {
 			for ($i = 0; $i <= 9; $i++)
-				$this->connection->insert('test', '`text`', "'Hello, $i'");
-			$result = $this->connection->select('test', '`text`');
+				$this->connection->insert('test', 'text', "'Hello, $i'");
 
-			$result = $this->connection->select('test', '`text`', "`text` LIKE 'Hello, 1'");
-			$result = $this->connection->nextResult($result);
-			$result = $result['text'];
+			foreach ($this->connection->select('test', 'text', "text = 'Hello, 1'") as $res)
+				$result = $res['text'];
 
 			$this->assertEquals('Hello, 1', $result);
 
@@ -55,11 +50,10 @@
 
 		public function testCanDoACount() : void {
 			for ($i = 0; $i <= 9; $i++)
-				$this->connection->insert('test', '`text`', "'Hello, world'");
+				$this->connection->insert('test', 'text', "'Hello, world'");
 			
-			$result = $this->connection->count('test', '`text`');
-			$result = $this->connection->nextResult($result);
-			$result = $result['COUNT(`text`)'];
+			foreach ($this->connection->count('test') as $res)
+				$result = $res['COUNT(*)'];
 
 			$this->assertEquals(10, $result);
 
@@ -68,41 +62,27 @@
 
 		public function testCanDoACountWhere() : void {
 			for ($i = 0; $i <= 9; $i++)
-				$this->connection->insert('test', '`text`', "'Hello, world'");
+				$this->connection->insert('test', 'text', "'Hello, world'");
 
 			for ($i = 0; $i <= 9; $i++)
-				$this->connection->insert('test', '`text`', "'Hello, $i'");
+				$this->connection->insert('test', 'text', "'Hello, $i'");
 			
-			$result = $this->connection->count('test', '`text`', "`text` = 'Hello, world'");
-			$result = $this->connection->nextResult($result);
-			$result = $result['COUNT(`text`)'];
+			foreach ($this->connection->count('test', '*', "text = 'Hello, world'") as $res)
+				$result = $res['COUNT(*)'];
 
 			$this->assertEquals(10, $result);
 
 			$this->connection->truncate('test');
 		}
 
-		public function testCanDoADrop() : void {
-			$this->connection->drop('test');
-			$this->connection->insert('test', '`text`', "'Hello, world'");
-			
-			$this->assertEquals(-1, $this->connection->affectedRows());
-
-			$this->connection->create('test', [
-				'id' => 'INT AUTO_INCREMENT PRIMARY KEY',
-				'text' => 'TEXT'
-			]);
-			$this->connection->truncate('test');
-		}
-
 		public function testCanDoATruncate() : void {
 			for ($i = 0; $i <= 9; $i++)
-				$this->connection->insert('test', '`text`', "'Hello, world'");
+				$this->connection->insert('test', 'text', "'Hello, world'");
 			
 			$this->connection->truncate('test');
-			$result = $this->connection->count('test', '`text`');
-			$result = $this->connection->nextResult($result);
-			$result = $result['COUNT(`text`)'];
+
+			foreach ($this->connection->count('test', '*') as $res)
+				$result = $res['COUNT(*)'];
 
 			$this->assertEquals(0, $result);
 
@@ -111,13 +91,12 @@
 
 		public function testCanDoADelete() : void {
 			for ($i = 0; $i <= 9; $i++)
-				$this->connection->insert('test', '`text`', "'Hello, world'");
+				$this->connection->insert('test', 'text', "'Hello, world'");
 			
-			$result = $this->connection->delete('test', '`id` = 1');
+			$result = $this->connection->delete('test', "id = 1");
 
-			$result = $this->connection->count('test', '`text`');
-			$result = $this->connection->nextResult($result);
-			$result = $result['COUNT(`text`)'];
+			foreach ($this->connection->count('test', '*') as $res)
+				$result = $res['COUNT(*)'];
 
 			$this->assertEquals(9, $result);
 
@@ -126,12 +105,11 @@
 
 		public function testCanDoAUpdate() : void {
 			for ($i = 0; $i <= 9; $i++)
-				$this->connection->insert('test', '`text`', "'Hello, world'");
+				$this->connection->insert('test', 'text', "'Hello, world'");
 			
-			$result = $this->connection->update('test', "`text` = 'Hello, you'");
+			$result = $this->connection->update('test', "text = 'Hello, you'");
 
-			$result = $this->connection->select('test', '`text`');
-			while ($res = $this->connection->nextResult($result))
+			foreach ($this->connection->select('test', 'text') as $res)
 				$this->assertEquals('Hello, you', $res['text']);
 
 			$this->connection->truncate('test');
@@ -139,16 +117,14 @@
 
 		public function testCanDoAUpdateWhere() : void {
 			for ($i = 0; $i <= 9; $i++)
-				$this->connection->insert('test', '`text`', "'Hello, world'");
+				$this->connection->insert('test', 'text', "'Hello, world'");
 
 			for ($i = 0; $i <= 9; $i++)
-				$this->connection->insert('test', '`text`', "'Hello, $i'");
+				$this->connection->insert('test', 'text', "'Hello, $i'");
 			
-			$result = $this->connection->update('test', "`text` = 'Hello, you'", "`text` = 'Hello, world'");
+			$result = $this->connection->update('test', "text = 'Hello, you'", "text = 'Hello, world'");
 
-			$result = $this->connection->select('test', '`text`', "`text` = 'Hello, you'");
-			$results = [];
-			while ($res = $this->connection->nextResult($result))
+			foreach ($this->connection->select('test', 'text', "text = 'Hello, you'") as $res)
 				$results[] = $res['text'];
 
 			$this->assertCount(10, $results);
@@ -157,51 +133,29 @@
 		}
 
 		public function testCanDoAInsertWithoutSQLInjection() : void {
-			$name = $this->connection->prevent('\');DROP TABLE test;');
-			$this->connection->insert('test', '`text`', "'$name'");
-			$result = $this->connection->select('test', '`text`');
-			$result = $this->connection->nextResult($result);
+			$prepare = $this->connection->prepare(Connection\QueryTypes::INSERT, 'test', 'text', ':text');
+			$prepare->bindValue(':text', '\');DROP TABLE test;');
+			$prepare->execute();
 
-			$this->assertEquals('\');DROP TABLE test;', $result['text']);
+			foreach ($this->connection->select('test', 'text') as $res)
+				$result = $res['text'];
 
-			$this->connection->truncate('test');
-		}
-
-		public function testNumRowsReturnTheCorrectNumber() : void {
-			for ($i = 0; $i <= 9; $i++)
-				$this->connection->insert('test', '`text`', "'Hello, world'");
-			
-			$result = $this->connection->select('test', '`text`');
-			$result = $this->connection->numRows($result);
-
-			$this->assertEquals(10, $result);
+			$this->assertEquals('\');DROP TABLE test;', $result);
 
 			$this->connection->truncate('test');
 		}
 
 		public function testAffectedRowsReturnTheCorrectNumber() : void {
-			$this->connection->drop('test');
-
-			$this->connection->insert('test', '`text`', "'Hello, world'");
-			$this->assertEquals(-1, $this->connection->affectedRows());
-
-			$this->connection->create('test', [
-				'id' => 'INT AUTO_INCREMENT PRIMARY KEY',
-				'text' => 'TEXT'
-			]);
-			$this->connection->insert('test', '`text`', "'Hello'");
+			$this->connection->insert('test', 'text', "'Hello'");
 			
 			for ($i = 0; $i <= 9; $i++)
-				$this->connection->insert('test', '`text`', "'Hello, world'");
+				$this->connection->insert('test', 'text', "'Hello, world'");
 
-			$result = $this->connection->delete('test', "`text` = 'Hello, world'");
+			$prepare = $this->connection->prepare(Connection\QueryTypes::DELETE, 'test', "text = 'Hello, world'");
+			$prepare->execute();
 
-			$this->assertEquals(10, $this->connection->affectedRows());
+			$this->assertEquals(10, $this->connection->affectedRows($prepare));
 
-			$this->connection->create('test', [
-				'id' => 'INT AUTO_INCREMENT PRIMARY KEY',
-				'text' => 'TEXT'
-			]);
 			$this->connection->truncate('test');
 		}
 	}

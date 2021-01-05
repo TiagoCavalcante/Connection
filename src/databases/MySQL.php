@@ -13,14 +13,15 @@
 			$port = ($port == null) ? (int) \getenv('port') : $port;
 
 			# connect to database or have the value of a error
-			$this->connection = new \mysqli($host, $user, $password, $database, $port) or die(\mysqli_error());
+			$this->connection = new \PDO("mysql:host=$host;dbname=$database;port=$port;user=$user;password=$password");
+			$this->connection->setAttribute(\PDO::ATTR_EMULATE_PREPARES, false);
 			# increase secure
 			$this->connection->query("SET SESSION sql_mode = 'NO_BACKSLASH_ESCAPES';");
 		}
 	
 		# closer
-		public function close() : void {
-			$this->connection->close();
+		function close() : void {
+			$this->connection = null;
 		}
 	
 		# functions
@@ -146,21 +147,13 @@
 		}
 
 		# SQL functions
-		public function nextResult(\mysqli_result $result) {
-			return $result->fetch_assoc();
-		}
-	
-		public function numRows(\mysqli_result $result) : int {
-			return mysqli_num_rows($result);
-		}
-	
-		public function affectedRows() : int {
-			return \mysqli_affected_rows($this->connection);
+		public function affectedRows(\PDOStatement $result) : int {
+			return $result->rowCount();
 		}
 
-		# prevent function (to prevent SQL injection)
-		public function prevent(string $value) : string {
-			return \mysqli_real_escape_string($this->connection, $value);
+		# PostgreSQL functions
+		public function prepare(string $type) : \PDOStatement {
+			return $this->connection->prepare($this->buildQuery(\func_get_args()));
 		}
 	}
 ?>
