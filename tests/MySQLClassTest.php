@@ -157,15 +157,12 @@
 		}
 
 		public function testCanDoAInsertWithoutSQLInjection() : void {
-			$name = $this->connection->prevent('I\'m fine');
+			$name = $this->connection->prevent('\');DROP TABLE test;');
 			$this->connection->insert('test', '`text`', "'$name'");
 			$result = $this->connection->select('test', '`text`');
-			$results = [];
-			$result = $this->connection->select('test', '`text`');
 			$result = $this->connection->nextResult($result);
-			$result = $result['text'];
 
-			$this->assertEquals('I\'m fine', $result);
+			$this->assertEquals('\');DROP TABLE test;', $result['text']);
 
 			$this->connection->truncate('test');
 		}
