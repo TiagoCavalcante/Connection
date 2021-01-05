@@ -14,6 +14,7 @@
 			$port = ($port == null) ? \getenv('port') : $port;
 
 			$this->connection = new \PDO("pgsql:host=$host;dbname=$database;port=$port;user=$user;password=$password");
+			$this->connection->setAttribute(\PDO::ATTR_EMULATE_PREPARES, false);
 		}
 	
 		# closer
