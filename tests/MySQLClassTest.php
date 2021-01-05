@@ -8,7 +8,7 @@
 
 			$this->connection = new Connection\MySQL();
 			$this->connection->create('test', [
-				'id' => 'INT AUTO_INCREMENT PRIMARY KEY', 
+				'id' => 'INT PRIMARY', 
 				'text' => 'TEXT'
 			]);
 		}

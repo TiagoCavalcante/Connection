@@ -65,6 +65,11 @@
 					
 					$i = 0;
 					foreach ($columns as $columm => $value) {
+						# when contains 'PRIMARY' replace by PgSQL's primary key
+						if (strpos($value, ' PRIMARY') !== false) { # for PHP 8: if (str_contains($value, 'PRIMARY'))
+							$value = str_replace(' PRIMARY', ' PRIMARY KEY GENERATED ALWAYS AS IDENTITY', $value);
+						}
+						
 						if (\is_numeric($columm))
 							$query .= "$value";
 						else

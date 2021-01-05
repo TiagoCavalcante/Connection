@@ -8,7 +8,7 @@
 
 			$this->connection = new Connection\PgSQL();
 			$this->connection->create('test', [
-				'id' => 'INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY',
+				'id' => 'INT PRIMARY',
 				'text' => 'TEXT NOT NULL'
 			]);
 		}
