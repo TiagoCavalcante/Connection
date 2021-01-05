@@ -14,6 +14,8 @@
 
 			# connect to database or have the value of a error
 			$this->connection = new \mysqli($host, $user, $password, $database, $port) or die(\mysqli_error());
+			# increase secure
+			$this->connection->query("SET SESSION sql_mode = 'NO_BACKSLASH_ESCAPES';");
 		}
 	
 		# closer
@@ -158,7 +160,7 @@
 
 		# prevent function (to prevent SQL injection)
 		public function prevent(string $value) : string {
-			return \mysqli_escape_string($this->connection, $value);
+			return \mysqli_real_escape_string($this->connection, $value);
 		}
 	}
 ?>
