@@ -28,8 +28,8 @@
 			for ($i = 0; $i <= 9; $i++)
 				$this->connection->insert('test', 'text', "'Hello, world'");
 			$results = [];
-			foreach ($this->connection->select('test', 'text') as $res)
-				$results[] = $res['text'];
+			foreach ($this->connection->select('test', 'text') as $result)
+				$results[] = $result['text'];
 
 			$this->assertCount(10, $results);
 
@@ -134,13 +134,13 @@
 
 		public function testCanDoAInsertWithoutSQLInjection() : void {
 			$prepare = $this->connection->prepare(Connection\QueryTypes::INSERT, 'test', 'text', ':text');
-			$prepare->bindValue(':text', 'I\'m fine');
+			$prepare->bindValue(':text', '\');DROP TABLE test;');
 			$prepare->execute();
 
 			foreach ($this->connection->select('test', 'text') as $res)
 				$result = $res['text'];
 
-			$this->assertEquals('I\'m fine', $result);
+			$this->assertEquals('\');DROP TABLE test;', $result);
 
 			$this->connection->truncate('test');
 		}
