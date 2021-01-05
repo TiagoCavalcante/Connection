@@ -7,8 +7,6 @@ First, check if you meet all of the **prerequisites**, after it **install**
 #### MySQL/MariaDB prerequisites
 1. Install `MySQL`/`MariaDB` and configure it
 2. In the file `php.ini` (if it doesn't exists rename the file `php.ini-development` to `php.ini`) remove the `;` before the `extension=mysqli` (it's probably in the line 922)
-#### SQLite prerequisites
-1. In the file `php.ini` (if it doesn't exists rename the file `php.ini-development` to `php.ini`) remove the `;` before the `extension=sqlite3` (it's probably in the line 942)
 #### PostgreSQL prerequisites
 1. Install `PostgreSQL` and configure it or crete a `PostgreSQL` database on [Heroku](https://data.heroku.com/)
 2. In the file `php.ini` (if it doesn't exists rename the file `php.ini-development` to `php.ini`) remove the `;` before the `extension=pdo_pgsql` (it's probably in the line 930)
@@ -63,23 +61,14 @@ Before init you need to execute the command bellow:
 composer install
 ```
 Before init you need to create the files `MySQL.env.php`, `PgSQL.env.php` and `SQLite.env.php` in the folder `tests`.
-The file `MySQL.env.php` need to have the `env`s `host`, `user`, `password` and `database`, e.g.:
+The files `MySQL.env.php` and `PgSQL.env.php` need to have the `env`s `host`, `user`, `password`, `database` and `port`, e.g.:
 ```php
 <?php
 	putenv('host=localhost');
 	putenv('user=root');
 	putenv('password=');
 	putenv('database=database');
-?>
-```
-The file `PgSQL.env.php` need to have the `env`s `host`, `user`, `password`, `database` and `port`, e.g.:
-```php
-<?php
-	putenv('host=localhost');
-	putenv('user=root');
-	putenv('password=');
-	putenv('database=tests');
-	putenv('port=5432');
+	putenv('port=3306')
 ?>
 ```
 The file `SQLite.env.php` need to have the `env` `database`, e.g.:
@@ -101,7 +90,7 @@ The file `SQLite.env.php` need to have the `env` `database`, e.g.:
   ```bash
   composer exec phpunit tests/MySQLClassTest.php
   ```
-* Execute `PgSLQ` tests:
+* Execute `PgSQL` tests:
   ```bash
   composer exec phpunit tests/PgSQLClassTest.php
   ```
