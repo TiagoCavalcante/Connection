@@ -20,8 +20,20 @@ jobs:
         key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
         restore-keys: |
           ${{ runner.os }}-php-
+    
+    - name: Create MySQL.env.php file
+      env:
+        database: ${{ secrets.MYSQL_DATABASE }}
+        host: ${{ secrets.MYSQL_HOST }}
+        password: ${{ secrets.MYSQL_PASSWORD }}
+        port: ${{ secrets.MYSQL_PORT }}
+        user: ${{ secrets.MYSQL_USER }}
+      run: echo "<?php putenv('host=$host'); putenv('user=$user'); putenv('password=$password'); putenv('database=$database'); putenv('port=$port');" > tests/MySQL.env.php
 
-    - name: Create the PgSQL.env.php file
+    - name: Run MySQL tests
+      run: composer exec phpunit tests/MySQLClassTest.php
+
+    - name: Create PgSQL.env.php file
       env:
         database: ${{ secrets.PGSQL_DATABASE }}
         host: ${{ secrets.PGSQL_HOST }}
@@ -32,7 +44,7 @@ jobs:
     - name: Run PgSQL tests
       run: composer exec phpunit tests/PgSQLClassTest.php
       
-    - name: Create the SQLite.env.php file
+    - name: Create SQLite.env.php file
       env:
         database: 'database.sqlite3'
       run: echo "<?php putenv('database=$database');" > tests/SQLite.env.php
