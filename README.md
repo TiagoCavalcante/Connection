@@ -2,30 +2,28 @@
 A PHP library that do SQL querys in PHP format
 
 ## Getting started
-First, check if you meet all of the **prerequisites**, after it **install**
+First, check if you meet all of the **prerequisites**, then **install**
 ### Prerequisites
 #### MySQL/MariaDB prerequisites
 1. Install `MySQL`/`MariaDB` and configure it
-2. In the file `php.ini` (if it doesn't exists rename the file `php.ini-development` to `php.ini`) remove the `;` before the `extension=mysqli` (it's probably in the line 922)
+2. In the file `php.ini` (if it doesn't exists rename the file `php.ini-development` to `php.ini`) remove the `;` before the `extension=pdo_mysql` (it's probably in the line 939)
 #### PostgreSQL prerequisites
 1. Install `PostgreSQL` and configure it or crete a `PostgreSQL` database on [Heroku](https://data.heroku.com/)
-2. In the file `php.ini` (if it doesn't exists rename the file `php.ini-development` to `php.ini`) remove the `;` before the `extension=pdo_pgsql` (it's probably in the line 930)
+2. In the file `php.ini` (if it doesn't exists rename the file `php.ini-development` to `php.ini`) remove the `;` before the `extension=pdo_pgsql` (it's probably in the line 942)
+### SQLite prerequisites
+1. Install `SQLite3` with the following command: `sudo apt-get install sqlite3`
 ### Instalation
-To install you need to execute the command bellow: (if you have Composer)
-```bash
-composer require connection/connection
-```
-And if you don't have Composer:
-```bash
-git clone https://github.com/TiagoCavalcanteTrindade/Connection
-```
+To install you need to:
+  * execute the following command to install with Composer: `composer require connection/connection`
+  * execute the following command to install with Git: `git clone https://github.com/TiagoCavalcanteTrindade/Connection`
 ### First sample
+`sample.php`:
 ```php
 <?php
 	require 'vendor/autoload.php';
 
 	# initialize the database
-	$conn = new Connection\SQLite('database.db');
+	$conn = new Connection\Connection();
 
 	# create the table `posts` with the fields `title` and `text`
 	$conn->create('posts', [
@@ -35,13 +33,10 @@ git clone https://github.com/TiagoCavalcanteTrindade/Connection
 
 	for ($i = 0; $i <= 9; $i++)
 		# insert into the table `posts`
-		$conn->insert('posts', '`title`, `text`', '"Title", "Text"');
+		$conn->insert('posts', ['title', 'text'], ['Title', 'Text']);
 
-	# select the rows of the table `posts`
-	$results = $conn->select('posts');
-
-	# select each result of the var $results
-	while ($result = $conn->nextResult($results))
+	# go through the array of results
+	foreach ($conn->select('posts') as $result)
 		# echo the `title` and the `text` of a post
 		echo "Title: {$result['title']}\nText: {$result['text']}\n";
 
@@ -49,63 +44,42 @@ git clone https://github.com/TiagoCavalcanteTrindade/Connection
 	$conn->close();
 ?>
 ```
+`env.php`:
+```php
+<?php
+	putenv('name=SQLite');
+	putenv('database=database.sqlite3');
+?>
+```
 And to execute:
 ```bash
-php filename.php
+php sample.php
 ```
 
 ## Tests
 ### Before init
-Before init you need to execute the command bellow:
-```bash
-composer install
-```
-Before init you need to create the files `MySQL.env.php`, `PgSQL.env.php` and `SQLite.env.php` in the folder `tests`.
-The files `MySQL.env.php` and `PgSQL.env.php` need to have the `env`s `host`, `user`, `password`, `database` and `port`, e.g.:
-```php
-<?php
-	putenv('host=localhost');
-	putenv('user=root');
-	putenv('password=');
-	putenv('database=database');
-	putenv('port=3306')
-?>
-```
-The file `SQLite.env.php` need to have the `env` `database`, e.g.:
-```php
-<?php
-	putenv('database=databases/database.sqlite3');
-?>
-```
+Before init you need to:
+  * execute the following command: `composer install`
+  * add a `env file`:
+    * all `envs` need to be defined with `putenv`, e.g.: `putenv('name=SQLite')`
+    * all `envs` are case sensitive
+    * all `env file` need to have the `env` *name* , its possible values are: `MySQL`, `PgSQL` and `SQLite`
+	* all `env file` need to have the `env` *database*
+	* the specific `envs` for each database are:
+	  * `MySQL`: *host*, *port*, *user* and *password*
+	  * `PgSQL`: *host*, *port*, *user* and *password*
+  * grant perssion to execute `phpunit` with the following command: `chmod 777 vendor/bin/phpunit`
+  * grant permission to execute the testing script with the following command: `chmod 777 tests.sh`
+
 ### Execute the tests
 * Execute all tests:
-  ```bash
-  composer exec phpunit tests
-  ```
+  * you don't need to edit `env.php` for every database, it's autmated by a script, you just need to create a file named `database.env.php` for each `database`
+  * execute the script: `./test.sh`
 * Execute `autoload.php` tests:
-  ```bash
-  composer exec phpunit tests/AutoloadFileTest.php
-  ```
-* Execute `MySQL`/`MariDB` tests:
-  ```bash
-  composer exec phpunit tests/MySQLClassTest.php
-  ```
-* Execute `PgSQL` tests:
-  ```bash
-  composer exec phpunit tests/PgSQLClassTest.php
-  ```
-* Execute `SQLite` tests:
-  ```bash
-  composer exec phpunit tests/SQLiteClassTest.php
-  ```
-* If you want to know where are the errors of a test run: (if you're on Linux)
-  ```bash
-  ./vendor/bin/phpunit [folder or file that you want to execute the tests]
-  ```
-  (if you're on Windows)
-  ```bash
-  call vendor/bin/phpunit [folder or file that you want to execute the tests]
-  ```
+  * execute the following command: `./vendor/bin/phpunit tests/AutoloadFileTest.php`
+* Execute `Connection` tests for specific database:
+  * add `env.php` file
+  * execute the following command: `./vendor/bin/phpunit tests/ConnectionClassTest.php`
 
 ## Documentation
 Access the [documentation](https://github.com/TiagoCavalcanteTrindade/Connection/wiki)
