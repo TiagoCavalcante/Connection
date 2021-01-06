@@ -13,13 +13,11 @@
 	"bin": "bin/connection",
 	"autoload": {
 		"files": [
-			"src/migrations/index.php",
-			"src/databases/MySQL.php",
-			"src/databases/PgSQL.php",
-			"src/databases/SQLite.php"
+			"src/index.php",
+			"src/migrations.php"
 		]
     },
     "require-dev": {
         "phpunit/phpunit": "^9"
-    }
+	}
 }

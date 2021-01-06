@@ -8,16 +8,8 @@
 			$this->assertTrue(\class_exists('Connection\Migrations'));
 		}
 
-		public function testMySQLClassExist() : void {
-			$this->assertTrue(\class_exists('Connection\MySQL'));
-		}
-
-		public function testPgSQLClassExist() : void {
-			$this->assertTrue(\class_exists('Connection\PgSQL'));
-		}
-
-		public function testSQLiteClassExist() : void {
-			$this->assertTrue(\class_exists('Connection\SQLite'));
+		public function testConnecionClassExist() : void {
+			$this->assertTrue(\class_exists('Connection\Connection'));
 		}
 	}
 ?>
