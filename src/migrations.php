@@ -19,8 +19,8 @@
 			fwrite($file, "<?php\n\trequire __DIR__ . '/../vendor/autoload.php';\n\trequire __DIR__ . '/../.env.php';\n\n\t\$connection = new Connection\SQLite();\n\n\t\$run = function() use (\$connection) {\n\t\t\$connection->create('posts', [\n\t\t\t'text' => 'TEXT'\n\t\t]);\n\t};\n\n\t\$back = function() use (\$connection) {\n\t\t\$connection->drop('posts');\n\t};\n?>");
 			fclose($file);
 
-			if (!file_exists('.env.php')) {
-				$env = fopen('.env.php', 'w');
+			if (!file_exists('env.php')) {
+				$env = fopen('env.php', 'w');
 				fwrite($env, "<?php\n\tputenv('database=databases/database.sqlite3');\n?>");
 				fclose($env);
 			}
