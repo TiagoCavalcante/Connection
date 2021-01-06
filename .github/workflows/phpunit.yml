@@ -28,10 +28,7 @@ jobs:
         password: ${{ secrets.MYSQL_PASSWORD }}
         port: ${{ secrets.MYSQL_PORT }}
         user: ${{ secrets.MYSQL_USER }}
-      run: echo "<?php putenv('host=$host'); putenv('user=$user'); putenv('password=$password'); putenv('database=$database'); putenv('port=$port');" > tests/MySQL.env.php
-
-    - name: Run MySQL tests
-      run: composer exec phpunit tests/MySQLClassTest.php
+      run: echo "<?php putenv('host=$host'); putenv('user=$user'); putenv('password=$password'); putenv('database=$database'); putenv('port=$port');" > MySQL.env.php
 
     - name: Create PgSQL.env.php file
       env:
@@ -40,16 +37,18 @@ jobs:
         password: ${{ secrets.PGSQL_PASSWORD }}
         port: ${{ secrets.PGSQL_PORT }}
         user: ${{ secrets.PGSQL_USER }}
-      run: echo "<?php putenv('host=$host'); putenv('user=$user'); putenv('password=$password'); putenv('database=$database'); putenv('port=$port');" > tests/PgSQL.env.php
-    - name: Run PgSQL tests
-      run: composer exec phpunit tests/PgSQLClassTest.php
+      run: echo "<?php putenv('host=$host'); putenv('user=$user'); putenv('password=$password'); putenv('database=$database'); putenv('port=$port');" > PgSQL.env.php
       
     - name: Create SQLite.env.php file
       env:
         database: 'database.sqlite3'
-      run: echo "<?php putenv('database=$database');" > tests/SQLite.env.php
-    - name: Run SQLite tests
-      run: composer exec phpunit tests/SQLiteClassTest.php
+      run: echo "<?php putenv('database=$database');" > SQLite.env.php
+
+    - name: Grant permission to run tests
+      run: chmod 777 tests.sh
+
+    - name: Run tests
+      run: ./tests.sh
 
     - name: Install dependencies
       if: steps.composer-cache.outputs.cache-hit != 'true'
