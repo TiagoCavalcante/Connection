@@ -13,21 +13,16 @@
 
 			$this->name = $name;
 
-			switch($name) {
-				case 'MySQL':
-					$this->connection = new \PDO("mysql:host=$host;dbname=$database;port=$port;user=$user;password=$password");
-					# increase security
-					$this->connection->query("SET SESSION sql_mode = 'NO_BACKSLASH_ESCAPES';");
-
-					break;
-				case 'PgSQL':
-					$this->connection = new \PDO("pgsql:host=$host;dbname=$database;port=$port;user=$user;password=$password");
-
-					break;
-				case 'SQLite':
-					$this->connection = new \PDO("sqlite:$database");
-
-					break;
+			if ($name == 'MySQL') {
+				$this->connection = new \PDO("mysql:host=$host;dbname=$database;port=$port;user=$user;password=$password");
+				# increase security
+				$this->connection->query("SET SESSION sql_mode = 'NO_BACKSLASH_ESCAPES';");
+			}
+			else if ($name == 'PgSQL') {
+				$this->connection = new \PDO("pgsql:host=$host;dbname=$database;port=$port;user=$user;password=$password");
+			}
+			else {
+				$this->connection = new \PDO("sqlite:$database");
 			}
 
 			# increase security
