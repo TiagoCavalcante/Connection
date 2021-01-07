@@ -63,10 +63,10 @@ Before init you need to:
   * add a `env file`:
     * all `envs` need to be defined with `putenv`, e.g.: `putenv('name=SQLite')`
     * all `envs` are case sensitive
-    * all `env file` need to have the `env` *name* , its possible values are: `MySQL`, `PgSQL` and `SQLite`
+    * all `env file` need to have the `env` *name*, its possible values are: `MySQL` (for MySQL and MariaDB), `PgSQL` and `SQLite`
 	* all `env file` need to have the `env` *database*
 	* the specific `envs` for each database are:
-	  * `MySQL`: *host*, *port*, *user* and *password*
+	  * `MySQL`/`MariaDB`: *host*, *port*, *user* and *password*
 	  * `PgSQL`: *host*, *port*, *user* and *password*
   * grant perssion to execute `phpunit` with the following command: `chmod 777 vendor/bin/phpunit`
   * grant permission to execute the testing script with the following command: `chmod 777 tests.sh`
