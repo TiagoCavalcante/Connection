@@ -82,10 +82,10 @@
 			}
 		}
 	
-		public function count(string $from, array $what = ['*'], array $where = null) : int {
+		public function count(string $from, array $what = ['*'], array $where = []) : int {
 			$what = implode(',', $what);
 
-			if ($where == null) {
+			if (count($where) == 0) {
 				if ($this->name == 'PgSQL')
 					$query = "SELECT COUNT($what) FROM $from;";
 				else
