@@ -20,9 +20,6 @@ jobs:
         key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
         restore-keys: ${{ runner.os }}-php-
 
-    - name: enable PHPUnit
-      uses: php-actions/phpunit@v9
-
     - name: Create env.php file for MySQL
       env:
         database: ${{ secrets.MYSQL_DATABASE }}
@@ -33,7 +30,9 @@ jobs:
       run: echo "<?php putenv('host=$host'); putenv('user=$user'); putenv('password=$password'); putenv('database=$database'); putenv('port=$port');" > env.php
 
     - name: PHPUnit Tests
-      uses: ./
+      uses:
+        php-actions/phpunit@v9
+        ./
       with:
         configuration: tests/phpunit.xml
         args: --coverage-text
@@ -48,7 +47,9 @@ jobs:
       run: echo "<?php putenv('host=$host'); putenv('user=$user'); putenv('password=$password'); putenv('database=$database'); putenv('port=$port');" > env.php
 
     - name: PHPUnit Tests
-      uses: ./
+      uses:
+        php-actions/phpunit@v9
+        ./
       with:
         configuration: tests/phpunit.xml
         args: --coverage-text
@@ -59,7 +60,9 @@ jobs:
       run: echo "<?php putenv('database=$database');" > env.php
 
     - name: PHPUnit Tests
-      uses: ./
+      uses:
+        php-actions/phpunit@v9
+        ./
       with:
         configuration: tests/phpunit.xml
         args: --coverage-text
