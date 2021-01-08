@@ -33,7 +33,7 @@ jobs:
       run: echo "<?php putenv('host=$host'); putenv('user=$user'); putenv('password=$password'); putenv('database=$database'); putenv('port=$port');" > env.php
 
     - name: PHPUnit Tests
-      uses: php-actions/phpunit
+      uses: php-actions/phpunit@latest
       with:
         bootstrap: vendor/autoload.php
         configuration: tests/phpunit.xml
@@ -49,7 +49,7 @@ jobs:
       run: echo "<?php putenv('host=$host'); putenv('user=$user'); putenv('password=$password'); putenv('database=$database'); putenv('port=$port');" > env.php
 
     - name: PHPUnit Tests
-      uses: php-actions/phpunit
+      uses: php-actions/phpunit@latest
       with:
         bootstrap: vendor/autoload.php
         configuration: tests/phpunit.xml
@@ -61,7 +61,7 @@ jobs:
       run: echo "<?php putenv('database=$database');" > env.php
 
     - name: PHPUnit Tests
-      uses: php-actions/phpunit
+      uses: php-actions/phpunit@latest
       with:
         bootstrap: vendor/autoload.php
         configuration: tests/phpunit.xml
