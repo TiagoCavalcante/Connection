@@ -18,37 +18,54 @@ jobs:
       with:
         path: vendor
         key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
-        restore-keys: |
-          ${{ runner.os }}-php-
-    
-    - name: Create MySQL.env.php file
+        restore-keys: ${{ runner.os }}-php-
+
+    - name: Grant permission to run tests
+      run: chmod 777 tests.sh
+
+    - name: Create env.php file for MySQL
       env:
         database: ${{ secrets.MYSQL_DATABASE }}
         host: ${{ secrets.MYSQL_HOST }}
         password: ${{ secrets.MYSQL_PASSWORD }}
         port: ${{ secrets.MYSQL_PORT }}
         user: ${{ secrets.MYSQL_USER }}
-      run: echo "<?php putenv('host=$host'); putenv('user=$user'); putenv('password=$password'); putenv('database=$database'); putenv('port=$port');" > MySQL.env.php
+      run: echo "<?php putenv('host=$host'); putenv('user=$user'); putenv('password=$password'); putenv('database=$database'); putenv('port=$port');" > env.php
 
-    - name: Create PgSQL.env.php file
+    - name: PHPUnit Tests
+      uses: php-actions/phpunit
+      with:
+        bootstrap: vendor/autoload.php
+        configuration: tests/phpunit.xml
+        args: --coverage-text
+
+    - name: Create env.php file for PgSQL
       env:
         database: ${{ secrets.PGSQL_DATABASE }}
         host: ${{ secrets.PGSQL_HOST }}
         password: ${{ secrets.PGSQL_PASSWORD }}
         port: ${{ secrets.PGSQL_PORT }}
         user: ${{ secrets.PGSQL_USER }}
-      run: echo "<?php putenv('host=$host'); putenv('user=$user'); putenv('password=$password'); putenv('database=$database'); putenv('port=$port');" > PgSQL.env.php
-      
-    - name: Create SQLite.env.php file
+      run: echo "<?php putenv('host=$host'); putenv('user=$user'); putenv('password=$password'); putenv('database=$database'); putenv('port=$port');" > env.php
+
+    - name: PHPUnit Tests
+      uses: php-actions/phpunit
+      with:
+        bootstrap: vendor/autoload.php
+        configuration: tests/phpunit.xml
+        args: --coverage-text
+
+    - name: Create env.php file for SQLite
       env:
         database: 'database.sqlite3'
-      run: echo "<?php putenv('database=$database');" > SQLite.env.php
+      run: echo "<?php putenv('database=$database');" > env.php
 
-    - name: Grant permission to run tests
-      run: chmod 777 tests.sh
-
-    - name: Run tests
-      run: ./tests.sh
+    - name: PHPUnit Tests
+      uses: php-actions/phpunit
+      with:
+        bootstrap: vendor/autoload.php
+        configuration: tests/phpunit.xml
+        args: --coverage-text
 
     - name: Install dependencies
       if: steps.composer-cache.outputs.cache-hit != 'true'
