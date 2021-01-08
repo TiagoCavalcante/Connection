@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 # autoload test
 ./vendor/bin/phpunit tests/AutoloadFileTest.php
 
