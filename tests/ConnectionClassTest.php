@@ -83,7 +83,7 @@
 			for ($i = 0; $i <= 9; $i++)
 				$this->connection->insert('test', ['text'], ['Hello, world']);
 			
-			$result = $this->connection->delete('test', [['=', 'id',  1]]);
+			$this->connection->delete('test', [['=', 'id',  1]]);
 
 			$this->assertEquals(9, $this->connection->count('test'));
 
@@ -94,7 +94,7 @@
 			for ($i = 0; $i <= 9; $i++)
 				$this->connection->insert('test', ['text'], ['Hello, world']);
 			
-			$result = $this->connection->update('test', [['=', 'text', 'Hello, you']]);
+			$this->connection->update('test', [['=', 'text', 'Hello, you']]);
 
 			foreach ($this->connection->select('test', ['text']) as $res)
 				$this->assertEquals('Hello, you', $res['text']);
@@ -109,7 +109,7 @@
 			for ($i = 0; $i <= 9; $i++)
 				$this->connection->insert('test', ['text'], ["Hello, $i"]);
 			
-			$result = $this->connection->update('test', [['=', 'text', 'Hello, you']], [['=', 'text', 'Hello, world']]);
+			$this->connection->update('test', [['=', 'text', 'Hello, you']], [['=', 'text', 'Hello, world']]);
 
 			foreach ($this->connection->select('test', ['text'], [['=', 'text', 'Hello, you']]) as $res)
 				$results[] = $res['text'];
@@ -120,7 +120,7 @@
 		}
 
 		public function testCanDoAInsertWithoutSQLInjection() : void {
-			$prepare = $this->connection->insert('test', ['text'], ['\'; DROP TABLE `test`; -- ']);
+			$this->connection->insert('test', ['text'], ['\'; DROP TABLE `test`; -- ']);
 
 			foreach ($this->connection->select('test', ['text']) as $res)
 				$result = $res['text'];
