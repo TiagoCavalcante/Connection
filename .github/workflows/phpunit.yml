@@ -19,9 +19,6 @@ jobs:
         path: vendor
         key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
         restore-keys: ${{ runner.os }}-php-
-    
-    - name: Go to repository base
-      run: cd /
 
     - name: Create env.php file for MySQL
       env:
@@ -33,9 +30,10 @@ jobs:
       run: echo "<?php putenv('host=$host'); putenv('user=$user'); putenv('password=$password'); putenv('database=$database'); putenv('port=$port');" > env.php
 
     - name: PHPUnit Tests
-      uses: php-actions/phpunit@v9
+      uses:
+        php-actions/phpunit@v9
+        ./
       with:
-        bootstrap: vendor/autoload.php
         configuration: tests/phpunit.xml
         args: --coverage-text
 
@@ -49,9 +47,10 @@ jobs:
       run: echo "<?php putenv('host=$host'); putenv('user=$user'); putenv('password=$password'); putenv('database=$database'); putenv('port=$port');" > env.php
 
     - name: PHPUnit Tests
-      uses: php-actions/phpunit@v9
+      uses:
+        php-actions/phpunit@v9
+        ./
       with:
-        bootstrap: vendor/autoload.php
         configuration: tests/phpunit.xml
         args: --coverage-text
 
@@ -61,9 +60,10 @@ jobs:
       run: echo "<?php putenv('database=$database');" > env.php
 
     - name: PHPUnit Tests
-      uses: php-actions/phpunit@v9
+      uses:
+        php-actions/phpunit@v9
+        ./
       with:
-        bootstrap: vendor/autoload.php
         configuration: tests/phpunit.xml
         args: --coverage-text
 
