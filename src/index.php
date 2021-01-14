@@ -25,10 +25,11 @@
 				$this->connection = new \PDO("sqlite:$database");
 			}
 
+			$this->connection->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
 			# increase security
 			$this->connection->setAttribute(\PDO::ATTR_EMULATE_PREPARES, false);
 		}
-	
+
 		# closer
 		function close() : void {
 			$this->connection = null;
@@ -61,7 +62,7 @@
 						$where_question_marks .= ' ' . $where[$i];
 					}
 				}
-				
+
 				if ($this->name == 'PgSQL') {
 					$query = "SELECT $what FROM $from WHERE $where_question_marks;";
 				}
@@ -81,7 +82,7 @@
 				return $statement->fetchAll();
 			}
 		}
-	
+
 		public function count(string $from, array $what = ['*'], array $where = []) : int {
 			$what = implode(',', $what);
 
@@ -103,7 +104,7 @@
 					else
 						$where_question_marks .= ' ' . $where[$i];
 				}
-				
+
 				if ($this->name == 'PgSQL')
 					$query = "SELECT COUNT($what) FROM $from WHERE $where_question_marks;";
 				else
@@ -117,7 +118,7 @@
 
 				$statement->execute($new_array);
 			}
-			
+
 			if ($this->name == 'PgSQL')
 				return $statement->fetchAll()[0]["count"];
 			else
@@ -127,14 +128,14 @@
 		public function insert(string $table, array $what, array $values) : void {
 			$what = implode(',', $what);
 			$values_question_marks = implode(',', array_fill(0, count($values), '?'));
-				
+
 			if ($this->name == 'PgSQL') {
 				$query = "INSERT INTO $table ($what) VALUES ($values_question_marks);";
 			}
 			else {
 				$query = "INSERT INTO `$table` ($what) VALUES ($values_question_marks);";
 			}
-			
+
 			$statement = $this->connection->prepare($query);
 
 			$statement->execute($values);
@@ -169,12 +170,12 @@
 					else
 						$where_question_marks .= ' ' . $where[$i];
 				}
-	
+
 				if ($this->name == 'PgSQL')
 					$query = "UPDATE $from SET $what_question_marks WHERE $where_question_marks;";
 				else
 					$query = "UPDATE `$from` SET $what_question_marks WHERE $where_question_marks;";
-	
+
 				$statement = $this->connection->prepare($query);
 
 				$new_array = [];
@@ -184,7 +185,7 @@
 				for ($i = 0; $i < count($where); $i++) {
 					$new_array[] = $where[$i][2];
 				}
-	
+
 				$statement->execute($new_array);
 			}
 
@@ -195,7 +196,7 @@
 				$query = "CREATE TABLE IF NOT EXISTS $table (";
 			else
 				$query = "CREATE TABLE IF NOT EXISTS `$table` (";
-						
+
 			$i = 0;
 			foreach ($columns as $columm => $value) {
 				# when contains 'PRIMARY' replace by MySQL's primary key
@@ -225,14 +226,14 @@
 					else
 						$query .= "`$columm` $value";
 				}
-							
+
 				# if it isn't the last element of the array
 				if ($i != count($columns) - 1)
 					$query .= ',';
-								
+
 				$i++;
 			}
-						
+
 			$query .= ');';
 
 			$this->connection->exec($query);
@@ -284,7 +285,7 @@
 			else {
 				$query = "DELETE FROM `$table` WHERE $where_question_marks;";
 			}
-			
+
 			$statement = $this->connection->prepare($query);
 			$statement->execute($new_array);
 		}
