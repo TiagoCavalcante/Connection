@@ -10,11 +10,9 @@
 	],
 	"license": "MIT",
 	"homepage": "https://github.com/TiagoCavalcanteTrindade/Connection",
-	"bin": "bin/connection",
 	"autoload": {
 		"files": [
-			"src/index.php",
-			"src/migrations.php"
+			"src/index.php"
 		]
     },
     "require-dev": {
