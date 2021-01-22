@@ -9,18 +9,19 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - name: Validate composer.json and composer.lock
+    - name: validate composer.json and composer.lock
       run: composer validate
       
-    - name: Cache Composer packages
-      id: composer-cache
-      uses: actions/cache@v2
-      with:
-        path: vendor
-        key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
-        restore-keys: ${{ runner.os }}-php-
+    - name: remove composer.lock
+      run: rm composer.lock
     
-    - name: Create MySQL.env.php file
+    - name: remove vendor folder
+      run: rm -r vendor
+
+    - name: install dependencies
+      run: composer install --prefer-dist --no-progress --no-suggest
+
+    - name: create MySQL.env.php file
       env:
         database: ${{ secrets.MYSQL_DATABASE }}
         host: ${{ secrets.MYSQL_HOST }}
@@ -29,7 +30,7 @@ jobs:
         user: ${{ secrets.MYSQL_USER }}
       run: echo "<?php putenv('host=$host'); putenv('user=$user'); putenv('password=$password'); putenv('database=$database'); putenv('port=$port');" > MySQL.env.php
 
-    - name: Create PgSQL.env.php file
+    - name: create PgSQL.env.php file
       env:
         database: ${{ secrets.PGSQL_DATABASE }}
         host: ${{ secrets.PGSQL_HOST }}
@@ -38,17 +39,13 @@ jobs:
         user: ${{ secrets.PGSQL_USER }}
       run: echo "<?php putenv('host=$host'); putenv('user=$user'); putenv('password=$password'); putenv('database=$database'); putenv('port=$port');" > PgSQL.env.php
       
-    - name: Create SQLite.env.php file
+    - name: create SQLite.env.php file
       env:
         database: 'database.sqlite3'
       run: echo "<?php putenv('database=$database');" > SQLite.env.php
 
-    - name: Grant permission to run tests
+    - name: grant permission to run tests
       run: chmod 777 tests.sh
 
-    - name: Run tests
+    - name: run tests
       run: ./tests.sh
-
-    - name: Install dependencies
-      if: steps.composer-cache.outputs.cache-hit != 'true'
-      run: composer install --prefer-dist --no-progress --no-suggest
