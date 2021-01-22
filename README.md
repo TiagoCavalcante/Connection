@@ -26,19 +26,28 @@ To install you need to:
 	$conn = new Connection\Connection();
 
 	# create the table `posts` with the fields `title` and `text`
-	$conn->create('posts', [
-		'title' => 'TEXT',
-		'text' => 'TEXT'
-	]);
+	$conn->table('posts')
+		->create()
+		->columns([
+			'title' => 'TEXT',
+			'text' => 'TEXT'
+		])
+		->run();
 
-	for ($i = 0; $i <= 9; $i++)
+	for ($i = 0; $i <= 9; $i++) {
 		# insert into the table `posts`
-		$conn->insert('posts', ['title', 'text'], ['Title', 'Text']);
+		$conn->table('posts')
+			->insert()
+			->what(['title', 'text'])
+			->values(['Title', 'Text'])
+			->run();
+	}
 
 	# go through the array of results
-	foreach ($conn->select('posts') as $result)
+	foreach ($conn->table('posts')->select()->what(['title', 'text'])->run() as $result) {
 		# echo the `title` and the `text` of a post
 		echo "Title: {$result['title']}\nText: {$result['text']}\n";
+	}
 
 	# colse the connection (necessary for security)
 	$conn->close();
