@@ -13,10 +13,10 @@ jobs:
       run: composer validate
       
     - name: remove composer.lock
-      run: rm composer.lock
+      run: rm -f composer.lock
     
     - name: remove vendor folder
-      run: rm -r vendor
+      run: rm -rf vendor
 
     - name: install dependencies
       run: composer install --prefer-dist --no-progress --no-suggest
