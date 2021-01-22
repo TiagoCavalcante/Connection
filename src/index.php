@@ -21,8 +21,11 @@
 			else if ($name == 'PgSQL') {
 				$this->connection = new \PDO("pgsql:host=$host;dbname=$database;port=$port;user=$user;password=$password");
 			}
-			else {
+			else if ($name == 'SQLite') {
 				$this->connection = new \PDO("sqlite:$database");
+			}
+			else {
+				throw new \Exception('the env "name" must be "MySQL" | "PgSQL" | "MariaDB"');
 			}
 
 			$this->connection->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
@@ -36,14 +39,15 @@
 		}
 
 		# query functions
-		public function select(string $from, array $what = ['*'], array $where = []) : array {
+		public function select(string $from, array $what = ['*'], array $where = [], int $limit = 0, int $offset = 0) : array {
+			$limit = ($limit == 0) ? '' : "LIMIT $limit";
 			$what = implode(',', $what);
 			if (count($where) == 0) {
 				if ($this->name == 'PgSQL') {
-					$query = "SELECT $what FROM $from;";
+					$query = "SELECT $what FROM $from $limit OFFSET $offset;";
 				}
 				else {
-					$query = "SELECT $what FROM `$from`;";
+					$query = "SELECT $what FROM `$from` $limit OFFSET $offset;";
 				}
 				$statement = $this->connection->prepare($query);
 
@@ -64,10 +68,10 @@
 				}
 
 				if ($this->name == 'PgSQL') {
-					$query = "SELECT $what FROM $from WHERE $where_question_marks;";
+					$query = "SELECT $what FROM $from WHERE $where_question_marks $limit OFFSET $offset;";
 				}
 				else {
-					$query = "SELECT $what FROM `$from` WHERE $where_question_marks;";
+					$query = "SELECT $what FROM `$from` WHERE $where_question_marks $limit OFFSET $offset;";
 				}
 				$statement = $this->connection->prepare($query);
 
