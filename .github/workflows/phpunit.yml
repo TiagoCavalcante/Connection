@@ -28,7 +28,7 @@ jobs:
         password: ${{ secrets.MYSQL_PASSWORD }}
         port: ${{ secrets.MYSQL_PORT }}
         user: ${{ secrets.MYSQL_USER }}
-      run: echo "<?php putenv('host=$host'); putenv('user=$user'); putenv('password=$password'); putenv('database=$database'); putenv('port=$port');" > MySQL.env.php
+      run: echo "<?php putenv('name=MySQL'); putenv('host=$host'); putenv('user=$user'); putenv('password=$password'); putenv('database=$database'); putenv('port=$port');" > MySQL.env.php
 
     - name: create PgSQL.env.php file
       env:
@@ -37,12 +37,12 @@ jobs:
         password: ${{ secrets.PGSQL_PASSWORD }}
         port: ${{ secrets.PGSQL_PORT }}
         user: ${{ secrets.PGSQL_USER }}
-      run: echo "<?php putenv('host=$host'); putenv('user=$user'); putenv('password=$password'); putenv('database=$database'); putenv('port=$port');" > PgSQL.env.php
+      run: echo "<?php putenv('name=PgSQL'); putenv('host=$host'); putenv('user=$user'); putenv('password=$password'); putenv('database=$database'); putenv('port=$port');" > PgSQL.env.php
       
     - name: create SQLite.env.php file
       env:
         database: 'database.sqlite3'
-      run: echo "<?php putenv('database=$database');" > SQLite.env.php
+      run: echo "<?php putenv('name=SQLite'); putenv('database=$database');" > SQLite.env.php
 
     - name: grant permission to run tests
       run: chmod 777 tests.sh
