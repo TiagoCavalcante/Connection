@@ -12,7 +12,7 @@ touch env.php
 # MySQL test
 cat MySQL.env.php > env.php
 ./vendor/bin/phpunit tests/ConnectionClassTest.php
-# MySQL test
+# PgSQL test
 cat PgSQL.env.php > env.php
 ./vendor/bin/phpunit tests/ConnectionClassTest.php
 # SQLite test
