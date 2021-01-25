@@ -11,10 +11,7 @@ jobs:
 
     - name: validate composer.json and composer.lock
       run: composer validate
-      
-    - name: remove composer.lock
-      run: rm -f composer.lock
-    
+
     - name: remove vendor folder
       run: rm -rf vendor
 
