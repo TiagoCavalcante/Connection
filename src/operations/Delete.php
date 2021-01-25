@@ -25,11 +25,11 @@
 					}
 				}
 				else {
-					$where_question_marks .= " {$this->where[$i]}";
+					$where_question_marks .= " {$this->where[$i]} ";
 				}
 			}
 
-			for ($i = 0; $i < count($this->where); $i++) {
+			for ($i = 0; $i < count($this->where); $i += 2) {
 				$new_array[] = $this->where[$i][2];
 			}
 
