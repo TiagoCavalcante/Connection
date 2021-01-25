@@ -44,7 +44,7 @@
 				}
 
 				# if it isn't the last element of the array
-				if ($i != count($this->columns) - 1) {					
+				if ($i < count($this->columns) - 1) {
 					$query .= ',';
 				}
 
