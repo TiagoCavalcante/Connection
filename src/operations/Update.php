@@ -25,7 +25,7 @@
 				$what_question_marks .= "{$this->what[$i][1]}{$this->what[$i][0]} ?";
 			}
 
-			if ($this->name == 'PgSQL') {
+			if ($this->name === 'PgSQL') {
 				$query = "UPDATE {$this->table} SET $what_question_marks;";
 			}
 			else {
@@ -49,7 +49,7 @@
 
 			$where_question_marks = '';
 			for ($i = 0; $i < count($this->where); $i++) {
-				if ($i % 2 == 0) {
+				if ($i % 2 === 0) {
 					$where_question_marks .= "{$this->where[$i][1]}{$this->where[$i][0]} ?";
 				}
 				else {
@@ -57,7 +57,7 @@
 				}
 			}
 
-			if ($this->name == 'PgSQL') {
+			if ($this->name === 'PgSQL') {
 				$query = "UPDATE {$this->table} SET $what_question_marks WHERE $where_question_marks;";
 			}
 			else {
@@ -77,7 +77,7 @@
 		}
 
 		public function run() : void {
-			if (count($this->where) == 0) {
+			if (count($this->where) === 0) {
 				$this->update();
 			}
 			else {

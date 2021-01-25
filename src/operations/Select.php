@@ -69,7 +69,7 @@
 				}
 			}
 
-			if ($this->name == 'PgSQL') {
+			if ($this->name === 'PgSQL') {
 				$query = "SELECT $what FROM {$this->table} WHERE $where_question_marks $limit $offset;";
 			}
 			else {

@@ -22,7 +22,7 @@
 			$what = implode(',', $this->what);
 			$values_question_marks = implode(',', array_fill(0, count($this->values), '?'));
 
-			if ($this->name == 'PgSQL') {
+			if ($this->name === 'PgSQL') {
 				$query = "INSERT INTO {$this->table} ($what) VALUES ($values_question_marks);";
 			}
 			else {
