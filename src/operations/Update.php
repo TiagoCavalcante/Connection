@@ -52,7 +52,7 @@
 					$where_question_marks .= "{$this->where[$i][1]}{$this->where[$i][0]} ?";
 				}
 				else {
-					$where_question_marks .= " {$this->where[$i]}";
+					$where_question_marks .= " {$this->where[$i]} ";
 				}
 			}
 
@@ -66,7 +66,7 @@
 			for ($i = 0; $i < count($this->what); $i++) {
 				$new_array[] = $this->what[$i][2];
 			}
-			for ($i = 0; $i < count($this->where); $i++) {
+			for ($i = 0; $i < count($this->where); $i += 2) {
 				$new_array[] = $this->where[$i][2];
 			}
 
