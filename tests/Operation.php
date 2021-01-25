@@ -9,9 +9,6 @@
 		}
 
 		public function setUp() : void {
-			require_once 'env.php';
-			require_once 'vendor/autoload.php';
-
 			$this->connection = new Connection\Connection();
 			$this->connection->table('test')
 				->create()
