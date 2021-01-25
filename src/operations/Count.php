@@ -51,7 +51,7 @@
 					$where_question_marks .= "{$this->where[$i][1]} {$this->where[$i][0]} ?";
 				}
 				else {
-					$where_question_marks .= " {$this->where[$i]}";
+					$where_question_marks .= " {$this->where[$i]} ";
 				}
 			}
 
@@ -62,8 +62,7 @@
 				$query = "SELECT COUNT($what) FROM `{$this->table}` WHERE $where_question_marks;";
 			}
 
-			$new_array = [];
-			for ($i = 0; $i < count($this->where); $i++) {
+			for ($i = 0; $i < count($this->where); $i += 2) {
 				$new_array[] = $this->where[$i][2];
 			}
 
