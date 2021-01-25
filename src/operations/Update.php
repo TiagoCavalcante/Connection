@@ -32,7 +32,6 @@
 				$query = "UPDATE `{$this->table}` SET $what_question_marks;";
 			}
 
-			$new_array = [];
 			for ($i = 0; $i < count($this->what); $i++) {
 				$new_array[] = $this->what[$i][2];
 			}
@@ -64,7 +63,6 @@
 				$query = "UPDATE `{$this->table}` SET $what_question_marks WHERE $where_question_marks;";
 			}
 
-			$new_array = [];
 			for ($i = 0; $i < count($this->what); $i++) {
 				$new_array[] = $this->what[$i][2];
 			}

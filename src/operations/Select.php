@@ -76,7 +76,6 @@
 				$query = "SELECT $what FROM `{$this->table}` WHERE $where_question_marks $limit $offset;";
 			}
 
-			$new_array = [];
 			for ($i = 0; $i < count($this->where); $i++) {
 				if ($i % 2 == 0) {
 					$new_array[] = $this->where[$i][2];
