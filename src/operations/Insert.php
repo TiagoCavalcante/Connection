@@ -4,6 +4,7 @@
 	require_once __DIR__ . '/../Operation.php';
 
 	final class Insert extends Operation {
+		private array $what;
 		private array $values;
 		
 		public function what(array $what) : object {
