@@ -12,8 +12,7 @@
 				->columns([
 					'id' => 'INT PRIMARY', 
 					'text' => 'TEXT'
-				])
-				->run();
+				])->run();
 		}
 
 		public function tearDown() : void {
