@@ -1,5 +1,5 @@
 # Connection
-An ORM for PHP
+A secure multiple databse ORM for PHP
 
 ## Getting started
 First, check if you meet all of the **prerequisites**, then **install**
