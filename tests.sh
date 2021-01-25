@@ -14,11 +14,11 @@ tests () {
 # grant permission to execute
 chmod +x vendor/bin/phpunit
 
-# autoload test
-./vendor/bin/phpunit --stop-on-failure tests/Autoload.php
-
 # create env file
 touch env.php
+
+# autoload test
+./vendor/bin/phpunit --stop-on-failure --color tests/AutoloadTest.php
 
 # MySQL test
 cat MySQL.env.php > env.php
