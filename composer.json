@@ -1,6 +1,6 @@
 {
 	"name": "connection/connection",
-	"description": "A PHP library that do SQL querys in PHP format",
+	"description": "A secure, multiple database ORM for PHP",
 	"authors": [
 		{
 			"name": "Tiago Cavalcante Trindade",
