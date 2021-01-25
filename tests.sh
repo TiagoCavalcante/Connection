@@ -1,14 +1,7 @@
 #!/usr/bin/env bash
 
 tests () {
-	./vendor/bin/phpunit --stop-on-failure tests/operation/Count.php
-	./vendor/bin/phpunit --stop-on-failure tests/operation/Create.php
-	./vendor/bin/phpunit --stop-on-failure tests/operation/Delete.php
-	./vendor/bin/phpunit --stop-on-failure tests/operation/Drop.php
-	./vendor/bin/phpunit --stop-on-failure tests/operation/Insert.php
-	./vendor/bin/phpunit --stop-on-failure tests/operation/Select.php
-	./vendor/bin/phpunit --stop-on-failure tests/operation/Truncate.php
-	./vendor/bin/phpunit --stop-on-failure tests/operation/Update.php
+	./vendor/bin/phpunit --stop-on-failure --color tests/operations
 }
 
 # grant permission to execute
