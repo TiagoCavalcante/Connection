@@ -5,10 +5,10 @@
 
 	final class Truncate extends Operation {
 		public function run() : void {
-			if ($this->name == 'PgSQL') {
+			if ($this->name === 'PgSQL') {
 				$this->connection->exec("TRUNCATE TABLE {$this->table};");
 			}
-			elseif ($this->name == 'MySQL') {
+			elseif ($this->name === 'MySQL') {
 				$this->connection->exec("TRUNCATE TABLE `{$this->table}`;");
 			}
 			else {

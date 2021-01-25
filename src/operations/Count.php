@@ -22,7 +22,7 @@
 		private function count() : int {
 			$what = implode(',', $this->what);
 
-			if ($this->name == 'PgSQL') {
+			if ($this->name === 'PgSQL') {
 				$query = "SELECT COUNT($what) FROM {$this->table};";
 			}
 			else {
@@ -32,7 +32,7 @@
 			$statement = $this->connection->prepare($query);
 			$statement->execute();
 
-			if ($this->name == 'PgSQL') {
+			if ($this->name === 'PgSQL') {
 				return $statement->fetchAll()[0]["count"];
 			}
 			else {
@@ -47,7 +47,7 @@
 
 			$where_question_marks = '';
 			for ($i = 0; $i < count($this->where); $i++) {
-				if ($i % 2 == 0) {
+				if ($i % 2 === 0) {
 					$where_question_marks .= "{$this->where[$i][1]} {$this->where[$i][0]} ?";
 				}
 				else {
@@ -55,7 +55,7 @@
 				}
 			}
 
-			if ($this->name == 'PgSQL') {
+			if ($this->name === 'PgSQL') {
 				$query = "SELECT COUNT($what) FROM {$this->table} WHERE $where_question_marks;";
 			}
 			else {
@@ -70,7 +70,7 @@
 			$statement = $this->connection->prepare($query);
 			$statement->execute($new_array);
 			
-			if ($this->name == 'PgSQL') {
+			if ($this->name === 'PgSQL') {
 				return $statement->fetchAll()[0]["count"];
 			}
 			else {
@@ -79,7 +79,7 @@
 		}
 
 		public function run() : int {
-			if (count($this->where) == 0) {
+			if (count($this->where) === 0) {
 				return $this->count();
 			}
 			else {

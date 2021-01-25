@@ -13,7 +13,7 @@
 		}
 
 		public function run() : void {
-			if ($this->name == 'PgSQL')
+			if ($this->name === 'PgSQL') {
 				$query = "CREATE TABLE IF NOT EXISTS {$this->table} (";
 			else
 				$query = "CREATE TABLE IF NOT EXISTS `{$this->table}` (";
