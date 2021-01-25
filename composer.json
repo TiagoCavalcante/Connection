@@ -17,7 +17,8 @@
 	},
 	"autoload-dev": {
 		"files": [
-			"tests/Operation.php"
+			"tests/Operation.php",
+			"env.php"
 		]
 	},
     "require-dev": {
