@@ -36,16 +36,11 @@
 					}
 				}
 
-				if (\is_numeric($columm)) {
-					$query .= "$value";
+				if ($this->name === 'PgSQL') {
+					$query .= "$columm $value";
 				}
 				else {
-					if ($this->name == 'PgSQL') {
-						$query .= "$columm $value";
-					}
-					else {
-						$query .= "`$columm` $value";
-					}
+					$query .= "`$columm` $value";
 				}
 
 				# if it isn't the last element of the array
