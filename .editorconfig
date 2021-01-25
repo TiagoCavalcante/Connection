@@ -2,9 +2,10 @@ root = true
 
 [*]
 end_of_line = lf
-insert_final_newline = flase
+insert_final_newline = false
 indent_style = tab
 indent_size = 4
+trim_trailing_whitespace = true
 
 [.github/workflows/phpunit.yml]
 indent_style = space
