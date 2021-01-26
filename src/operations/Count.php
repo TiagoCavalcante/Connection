@@ -41,8 +41,6 @@
 		}
 
 		private function countWhere() : int {
-			# where syntax: [['>', 'id', '0'], 'AND', ['LIKE', 'eye_color', 'blue'], 'OR', ['=', 'eye_color', 'green']]
-
 			$what = implode(',', $this->what);
 
 			$where_question_marks = '';
