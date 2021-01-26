@@ -6,6 +6,7 @@
 	final class Update extends Operation {
 		private array $what;
 		private array $where = [];
+		private int $limit = 0;
 
 		public function what(array $what) : object {
 			$this->what = $what;
@@ -19,7 +20,15 @@
 			return $this;
 		}
 
+		public function limit(int $limit) : object {
+			$this->limit = $limit;
+
+			return $this;
+		}
+
 		private function update() : void {
+			$limit = ($this->limit == 0) ? '' : "LIMIT {$this->limit}";
+
 			$what_question_marks = '';
 			for ($i = 0; $i < count($this->what); $i++) {
 				$what_question_marks .= "{$this->what[$i][1]}{$this->what[$i][0]} ?";
@@ -41,6 +50,8 @@
 		}
 
 		private function updateWhere() : void {
+			$limit = ($this->limit == 0) ? '' : "LIMIT {$this->limit}";
+
 			$what_question_marks = '';
 			for ($i = 0; $i < count($this->what); $i++) {
 				$what_question_marks .= "{$this->what[$i][1]}{$this->what[$i][0]} ?";
@@ -57,10 +68,10 @@
 			}
 
 			if ($this->name === 'PgSQL') {
-				$query = "UPDATE {$this->table} SET $what_question_marks WHERE $where_question_marks;";
+				$query = "UPDATE {$this->table} SET $what_question_marks WHERE $where_question_marks $limit;";
 			}
 			else {
-				$query = "UPDATE `{$this->table}` SET $what_question_marks WHERE $where_question_marks;";
+				$query = "UPDATE `{$this->table}` SET $what_question_marks WHERE $where_question_marks $limit;";
 			}
 
 			for ($i = 0; $i < count($this->what); $i++) {
