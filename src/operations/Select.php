@@ -52,8 +52,6 @@
 		}
 
 		private function selectWhere() : array {
-			# where syntax: [['>', 'id', '0'], 'AND', ['LIKE', 'eye_color', 'blue'], 'OR', ['=', 'eye_color', 'green']]
-
 			$limit = ($this->limit == 0) ? '' : "LIMIT {$this->limit}";
 			$offset = ($this->offset == 0) ? '' : "OFFSET {$this->offset}";
 

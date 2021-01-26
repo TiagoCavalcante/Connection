@@ -22,7 +22,6 @@
 
 			$i = 0;
 			foreach ($this->columns as $columm => $value) {
-				# when contains 'PRIMARY' replace by database's primary key
 				# for PHP 8: if (str_contains($value, 'PRIMARY'))
 				if (strpos($value, ' PRIMARY') !== false) {
 					if ($this->name === 'MySQL') {
