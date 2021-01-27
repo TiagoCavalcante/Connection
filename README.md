@@ -20,7 +20,8 @@ To install you need to:
 `sample.php`:
 ```php
 <?php
-	require 'vendor/autoload.php';
+	require_once 'env.php';
+	require_once 'vendor/autoload.php';
 
 	# initialize the database
 	$conn = new Connection\Connection();
