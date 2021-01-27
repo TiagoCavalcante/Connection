@@ -35,10 +35,10 @@
 			}
 
 			if ($this->name === 'PgSQL') {
-				$query = "UPDATE {$this->table} SET $what_question_marks;";
+				$query = "UPDATE {$this->table} SET $what_question_marks $limit;";
 			}
 			else {
-				$query = "UPDATE `{$this->table}` SET $what_question_marks;";
+				$query = "UPDATE `{$this->table}` SET $what_question_marks $limit;";
 			}
 
 			for ($i = 0; $i < count($this->what); $i++) {
