@@ -1,0 +1,8 @@
+vendor
+composer.lock
+
+MySQL.env.php
+PgSQL.env.php
+SQLite.env.php
+
+database.sqlite3
