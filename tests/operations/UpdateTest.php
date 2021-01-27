@@ -23,6 +23,56 @@
 				->run();
 		}
 
+		public function testCanDoAUpdateLimit() : void {
+			for ($i = 0; $i <= 9; $i++) {
+				$this->connection->table('test')
+					->insert()
+					->what(['text'])
+					->values(['Hello, world'])
+					->run();
+			}
+
+			if (getenv('name') === 'PgSQL') {
+				$this->expectException(Exception::class);
+
+				try {
+					$this->connection->table('test')
+						->update()
+						->what([['=', 'text', 'Hello, you']])
+						->limit(5)
+						->run();
+				}
+				finally {
+					$this->connection->table('test')
+						->truncate()
+						->run();
+				}
+			}
+			else {
+				$this->connection->table('test')
+					->update()
+					->what([['=', 'text', 'Hello, you']])
+					->limit(5)
+					->run();
+
+				$i = 0;
+				foreach ($this->connection->table('test')->select()->what(['text'])->run() as $result) {
+					if ($i < 5) {
+						$this->assertEquals('Hello, you', $result['text']);
+					}
+					else {
+						$this->assertEquals('Hello, world', $result['text']);
+					}
+
+					$i++;
+				}
+
+				$this->connection->table('test')
+					->truncate()
+					->run();
+			}
+		}
+
 		public function testCanDoAUpdateWhere() : void {
 			for ($i = 0; $i <= 9; $i++) {
 				$this->connection->table('test')
