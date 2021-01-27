@@ -42,7 +42,11 @@
 			}
 
 			if ($this->name === 'PgSQL') {
-				$query = "DELETE FROM {$this->table} WHERE $where_question_marks $limit;";
+				if ($limit !== "") {
+					throw new \Exception("PostgreSQL cannot have limit");
+				}
+
+				$query = "DELETE FROM {$this->table} WHERE $where_question_marks;";
 			}
 			else {
 				$query = "DELETE FROM `{$this->table}` WHERE $where_question_marks $limit;";
