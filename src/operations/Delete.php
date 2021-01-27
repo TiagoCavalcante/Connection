@@ -14,6 +14,10 @@
 		}
 
 		public function limit(int $limit) : object {
+			if ($this->name === 'PgSQL') {
+				throw new \Exception("PostgreSQL cannot have limit");
+			}
+
 			$this->limit = $limit;
 
 			return $this;
@@ -42,10 +46,6 @@
 			}
 
 			if ($this->name === 'PgSQL') {
-				if ($limit !== "") {
-					throw new \Exception("PostgreSQL cannot have limit");
-				}
-
 				$query = "DELETE FROM {$this->table} WHERE $where_question_marks;";
 			}
 			else {
