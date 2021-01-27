@@ -42,7 +42,7 @@ jobs:
       run: echo "<?php putenv('name=SQLite'); putenv('database=$database');" > SQLite.env.php
 
     - name: grant permission to run tests
-      run: chmod 777 tests.sh
+      run: chmod +x tests.sh
 
     - name: run tests
       run: ./tests.sh
