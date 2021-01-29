@@ -9,7 +9,7 @@
 
 			$this->connection->table('test')
 				->select()
-				->what(['*'])
+				->what('*')
 				->run();
 		}
 	}

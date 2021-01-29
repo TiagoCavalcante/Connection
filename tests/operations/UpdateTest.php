@@ -4,17 +4,17 @@
 			for ($i = 0; $i <= 9; $i++) {
 				$this->connection->table('test')
 					->insert()
-					->what(['text'])
-					->values(['Hello, world'])
+					->what('text')
+					->values('Hello, world')
 					->run();
 			}
 			
 			$this->connection->table('test')
 				->update()
-				->what([['=', 'text', 'Hello, you']])
+				->what(['=', 'text', 'Hello, you'])
 				->run();
 
-			foreach ($this->connection->table('test')->select()->what(['text'])->run() as $result) {
+			foreach ($this->connection->table('test')->select()->what('text')->run() as $result) {
 				$this->assertEquals('Hello, you', $result['text']);
 			}
 
@@ -27,8 +27,8 @@
 			for ($i = 0; $i <= 9; $i++) {
 				$this->connection->table('test')
 					->insert()
-					->what(['text'])
-					->values(['Hello, world'])
+					->what('text')
+					->values('Hello, world')
 					->run();
 			}
 
@@ -38,7 +38,7 @@
 				try {
 					$this->connection->table('test')
 						->update()
-						->what([['=', 'text', 'Hello, you']])
+						->what(['=', 'text', 'Hello, you'])
 						->limit(5)
 						->run();
 				}
@@ -51,12 +51,12 @@
 			else {
 				$this->connection->table('test')
 					->update()
-					->what([['=', 'text', 'Hello, you']])
+					->what(['=', 'text', 'Hello, you'])
 					->limit(5)
 					->run();
 
 				$i = 0;
-				foreach ($this->connection->table('test')->select()->what(['text'])->run() as $result) {
+				foreach ($this->connection->table('test')->select()->what('text')->run() as $result) {
 					if ($i < 5) {
 						$this->assertEquals('Hello, you', $result['text']);
 					}
@@ -77,26 +77,26 @@
 			for ($i = 0; $i <= 9; $i++) {
 				$this->connection->table('test')
 					->insert()
-					->what(['text'])
-					->values(['Hello, world'])
+					->what('text')
+					->values('Hello, world')
 					->run();
 			}
 
 			for ($i = 0; $i <= 9; $i++) {
 				$this->connection->table('test')
 					->insert()
-					->what(['text'])
-					->values(["Hello, $i"])
+					->what('text')
+					->values("Hello, $i")
 					->run();
 			}
 			
 			$this->connection->table('test')
 				->update()
-				->what([['=', 'text', 'Hello, you']])
-				->where([['=', 'text', 'Hello, world']])
+				->what(['=', 'text', 'Hello, you'])
+				->where(['=', 'text', 'Hello, world'])
 				->run();
 
-			foreach ($this->connection->table('test')->select()->what(['text'])->where([['=', 'text', 'Hello, you']])->run() as $result) {
+			foreach ($this->connection->table('test')->select()->what('text')->where(['=', 'text', 'Hello, you'])->run() as $result) {
 				$results[] = $result['text'];
 			}
 
@@ -111,26 +111,26 @@
 			for ($i = 0; $i <= 9; $i++) {
 				$this->connection->table('test')
 					->insert()
-					->what(['text'])
-					->values(['Hello, world'])
+					->what('text')
+					->values('Hello, world')
 					->run();
 			}
 
 			for ($i = 0; $i <= 9; $i++) {
 				$this->connection->table('test')
 					->insert()
-					->what(['text'])
-					->values(["Hello, $i"])
+					->what('text')
+					->values("Hello, $i")
 					->run();
 			}
 			
 			$this->connection->table('test')
 				->update()
-				->what([['=', 'text', 'Hello, you']])
-				->where([['=', 'text', 'Hello, world'], 'AND', ['<>', 'id', 1]])
+				->what(['=', 'text', 'Hello, you'])
+				->where(['=', 'text', 'Hello, world'], 'AND', ['<>', 'id', 1])
 				->run();
 
-			foreach ($this->connection->table('test')->select()->what(['text'])->where([['=', 'text', 'Hello, you']])->run() as $result) {
+			foreach ($this->connection->table('test')->select()->what('text')->where(['=', 'text', 'Hello, you'])->run() as $result) {
 				$results[] = $result['text'];
 			}
 

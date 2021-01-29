@@ -7,7 +7,7 @@
 		private array $where;
 		private int $limit = 0;
 
-		public function where(array $where) : object {
+		public function where(...$where) : object {
 			$this->where = $where;
 
 			return $this;

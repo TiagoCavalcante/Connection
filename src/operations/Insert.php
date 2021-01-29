@@ -7,13 +7,13 @@
 		private array $what;
 		private array $values;
 		
-		public function what(array $what) : object {
+		public function what(...$what) : object {
 			$this->what = $what;
 
 			return $this;
 		}
 
-		public function values(array $values) : object {
+		public function values(...$values) : object {
 			$this->values = $values;
 
 			return $this;

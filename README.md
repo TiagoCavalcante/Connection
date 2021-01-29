@@ -39,13 +39,13 @@ To install you need to:
 		# insert into the table `posts`
 		$conn->table('posts')
 			->insert()
-			->what(['title', 'text'])
-			->values(['Title', 'Text'])
+			->what('title', 'text')
+			->values('Title', 'Text')
 			->run();
 	}
 
 	# go through the array of results
-	foreach ($conn->table('posts')->select()->what(['title', 'text'])->run() as $result) {
+	foreach ($conn->table('posts')->select()->what('title', 'text')->run() as $result) {
 		# echo the `title` and the `text` of a post
 		echo "Title: {$result['title']}\nText: {$result['text']}\n";
 	}

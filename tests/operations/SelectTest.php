@@ -4,12 +4,12 @@
 			for ($i = 0; $i <= 9; $i++) {
 				$this->connection->table('test')
 					->insert()
-					->what(['text'])
-					->values(['Hello, world'])
+					->what('text')
+					->values('Hello, world')
 					->run();
 			}
 
-			foreach ($this->connection->table('test')->select()->what(['text'])->run() as $result) {
+			foreach ($this->connection->table('test')->select()->what('text')->run() as $result) {
 				$results[] = $result[0];
 			}
 
@@ -22,12 +22,12 @@
 			for ($i = 0; $i <= 9; $i++) {
 				$this->connection->table('test')
 					->insert()
-					->what(['text'])
-					->values(["Hello, $i"])
+					->what('text')
+					->values("Hello, $i")
 					->run();
 			}
 
-			foreach ($this->connection->table('test')->select()->what(['text'])->where([['=', 'text', 'Hello, 1']])->run() as $result) {
+			foreach ($this->connection->table('test')->select()->what('text')->where(['=', 'text', 'Hello, 1'])->run() as $result) {
 				$result = $result['text'];
 			}
 
@@ -40,13 +40,13 @@
 			for ($i = 0; $i <= 9; $i++) {
 				$this->connection->table('test')
 					->insert()
-					->what(['text'])
-					->values(["Hello, $i"])
+					->what('text')
+					->values("Hello, $i")
 					->run();
 			}
 
 			$i = 1;
-			foreach ($this->connection->table('test')->select()->what(['text'])->where([['=', 'text', 'Hello, 1'], 'OR', ['=', 'text', 'Hello, 2']])->run() as $result) {
+			foreach ($this->connection->table('test')->select()->what('text')->where(['=', 'text', 'Hello, 1'], 'OR', ['=', 'text', 'Hello, 2'])->run() as $result) {
 				$this->assertEquals("Hello, $i", $result['text']);
 
 				$i++;

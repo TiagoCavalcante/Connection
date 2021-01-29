@@ -4,21 +4,21 @@
 			for ($i = 0; $i <= 9; $i++) {
 				$this->connection->table('test')
 					->insert()
-					->what(['text'])
-					->values(['Hello, world'])
+					->what('text')
+					->values('Hello, world')
 					->run();
 			}
 			
 			$this->connection->table('test')
 				->delete()
-				->where([['=', 'id',  1]])
+				->where(['=', 'id',  1])
 				->run();
 
 			$this->assertEquals(
 				9,
 				$this->connection->table('test')
 					->count()
-					->what(['*'])
+					->what('*')
 					->run()
 			);
 
@@ -29,8 +29,8 @@
 			for ($i = 0; $i <= 9; $i++) {
 				$this->connection->table('test')
 					->insert()
-					->what(['text'])
-					->values(['Hello, world'])
+					->what('text')
+					->values('Hello, world')
 					->run();
 			}
 
@@ -40,7 +40,7 @@
 				try {
 					$this->connection->table('test')
 						->delete()
-						->where([['=', 'text',  'Hello, world']])
+						->where(['=', 'text',  'Hello, world'])
 						->limit(5)
 						->run();
 				}
@@ -51,7 +51,7 @@
 			else {
 				$this->connection->table('test')
 					->delete()
-					->where([['=', 'text',  'Hello, world']])
+					->where(['=', 'text',  'Hello, world'])
 					->limit(5)
 					->run();
 
@@ -59,7 +59,7 @@
 					5,
 					$this->connection->table('test')
 						->count()
-						->what(['*'])
+						->what('*')
 						->run()
 				);
 
@@ -71,21 +71,21 @@
 			for ($i = 0; $i <= 9; $i++) {
 				$this->connection->table('test')
 					->insert()
-					->what(['text'])
-					->values(['Hello, world'])
+					->what('text')
+					->values('Hello, world')
 					->run();
 			}
 			
 			$this->connection->table('test')
 				->delete()
-				->where([['=', 'id',  1], 'OR', ['=', 'id', 2]])
+				->where(['=', 'id',  1], 'OR', ['=', 'id', 2])
 				->run();
 
 			$this->assertEquals(
 				8,
 				$this->connection->table('test')
 					->count()
-					->what(['*'])
+					->what('*')
 					->run()
 			);
 

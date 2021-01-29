@@ -7,13 +7,13 @@
 		private array $what;
 		private array $where = [];
 
-		public function what(array $what) : object {
+		public function what(...$what) : object {
 			$this->what = $what;
 
 			return $this;
 		}
 
-		public function where(array $where) : object {
+		public function where(...$where) : object {
 			$this->where = $where;
 
 			return $this;

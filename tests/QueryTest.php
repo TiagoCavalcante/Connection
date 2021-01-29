@@ -3,7 +3,7 @@
 		public function testCanUseACustomInsert() {
 			$this->assertEquals([], $this->connection->query('INSERT INTO test (text) VALUES (?)', 'Hello, world'));
 			
-			$this->assertEquals(1, $this->connection->table('test')->count()->what(['*'])->run());
+			$this->assertEquals(1, $this->connection->table('test')->count()->what('*')->run());
 
 			$this->truncate();
 		}
@@ -12,8 +12,8 @@
 			for ($i = 0; $i <= 9; $i++) {
 				$this->connection->table('test')
 					->insert()
-					->what(['text'])
-					->values(['Hello, world'])
+					->what('text')
+					->values('Hello, world')
 					->run();
 			}
 
