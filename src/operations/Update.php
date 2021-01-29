@@ -8,13 +8,13 @@
 		private array $where = [];
 		private int $limit = 0;
 
-		public function what(...$what) : object {
+		public function what(array ...$what) : object {
 			$this->what = $what;
 
 			return $this;
 		}
 
-		public function where(...$where) : object {
+		public function where(array | string ...$where) : object {
 			$this->where = $where;
 
 			return $this;
