@@ -8,6 +8,7 @@
 		private array $where = [];
 		private int $limit = 0;
 		private int $offset = 0;
+		private array $orderBy = [];
 
 		public function what(string ...$what) : object {
 			$this->what = $what;
@@ -33,17 +34,49 @@
 			return $this;
 		}
 
+		public function orderBy(array ...$orderBy) : object {
+			$this->orderBy = $orderBy;
+
+			return $this;
+		}
+
+		private function getOderByPartialQuery() : string {
+			$orderBy = '';
+
+			for ($i = 0; $i < count($this->orderBy); $i++) {
+				if ($this->name === 'PgSQL') {
+					$orderBy .= "{$this->orderBy[$i][0]} ";
+				}
+				else {
+					$orderBy .= "`{$this->orderBy[$i][0]}` ";
+				}
+
+				$orderBy .= (count($this->orderBy[$i]) !== 1) ? $this->orderBy[$i][1] : '';
+
+				if ($i < count($this->orderBy) - 1) {
+					$orderBy .= ',';
+				}
+			}
+
+			if ($orderBy !== '') {
+				$orderBy = "ORDER BY $orderBy";
+			}
+
+			return $orderBy;
+		}
+
 		private function select() : array {
 			$limit = ($this->limit === 0) ? '' : "LIMIT {$this->limit}";
 			$offset = ($this->offset === 0) ? '' : "OFFSET {$this->offset}";
+			$orderBy = $this->getOderByPartialQuery();
 	
 			$what = implode(',', $this->what);
 
 			if ($this->name === 'PgSQL') {
-				$query = "SELECT $what FROM {$this->table} $limit $offset;";
+				$query = "SELECT $what FROM {$this->table} $limit $offset $orderBy;";
 			}
 			else {
-				$query = "SELECT $what FROM `{$this->table}` $limit $offset;";
+				$query = "SELECT $what FROM `{$this->table}` $limit $offset $orderBy;";
 			}
 
 			$statement = $this->connection->prepare($query);
@@ -54,6 +87,7 @@
 		private function selectWhere() : array {
 			$limit = ($this->limit === 0) ? '' : "LIMIT {$this->limit}";
 			$offset = ($this->offset === 0) ? '' : "OFFSET {$this->offset}";
+			$orderBy = $this->getOderByPartialQuery();
 
 			$what = implode(',', $this->what);
 
@@ -68,10 +102,10 @@
 			}
 
 			if ($this->name === 'PgSQL') {
-				$query = "SELECT $what FROM {$this->table} WHERE $where_question_marks $limit $offset;";
+				$query = "SELECT $what FROM {$this->table} WHERE $where_question_marks $limit $offset $orderBy;";
 			}
 			else {
-				$query = "SELECT $what FROM `{$this->table}` WHERE $where_question_marks $limit $offset;";
+				$query = "SELECT $what FROM `{$this->table}` WHERE $where_question_marks $limit $offset $orderBy;";
 			}
 
 			for ($i = 0; $i < count($this->where); $i += 2) {
