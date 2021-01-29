@@ -17,7 +17,7 @@
 			if ($name === 'MySQL') {
 				$this->connection = new \PDO("mysql:host=$host;dbname=$database;port=$port;user=$user;password=$password");
 				# increase security
-				$this->connection->query("SET SESSION sql_mode = 'NO_BACKSLASH_ESCAPES';");
+				$this->query("SET SESSION sql_mode = 'NO_BACKSLASH_ESCAPES'");
 			}
 			elseif ($name === 'PgSQL') {
 				$this->connection = new \PDO("pgsql:host=$host;dbname=$database;port=$port;user=$user;password=$password");
