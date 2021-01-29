@@ -41,5 +41,19 @@
 		function table(string $table) : object {
 			return new Table($this->connection, $this->name, $table);
 		}
+
+		function query(string $query, ...$arguments) : array {
+			$statement = $this->connection->prepare("$query;");
+			$statement->execute($arguments);
+
+			$rows = $statement->fetchAll();
+
+			// SQLite3 returns [0 => []] for non-queries (insert, delete, ...)
+			if ($rows == [[]]) {
+				$rows = [];
+			}
+
+			return $rows;
+		}
 	}
 ?>
