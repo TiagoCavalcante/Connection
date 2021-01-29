@@ -22,8 +22,7 @@
 
 			$i = 0;
 			foreach ($this->columns as $columm => $value) {
-				# for PHP 8: if (str_contains($value, 'PRIMARY'))
-				if (strpos($value, ' PRIMARY') !== false) {
+				if (str_contains($value, 'PRIMARY')) {
 					if ($this->name === 'MySQL') {
 						$value = str_replace(' PRIMARY', ' AUTO_INCREMENT PRIMARY KEY', $value);
 					}
