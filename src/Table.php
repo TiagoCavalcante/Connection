@@ -12,7 +12,7 @@
 	require_once __DIR__ . '/operations/Truncate.php';
 	require_once __DIR__ . '/operations/Delete.php';
 
-	final class Query extends Operation {
+	final class Table extends Operation {
 		public function select() : object {
 			return new Select($this->connection, $this->name, $this->table);
 		}

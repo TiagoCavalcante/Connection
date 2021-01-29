@@ -1,7 +1,7 @@
 <?php
 	namespace Connection;
 
-	require_once __DIR__ . '/Query.php';
+	require_once __DIR__ . '/Table.php';
 
 	final class Connection {
 		public function __construct() {
@@ -39,7 +39,7 @@
 		}
 
 		function table(string $table) : object {
-			return new Query($this->connection, $this->name, $table);
+			return new Table($this->connection, $this->name, $table);
 		}
 	}
 ?>

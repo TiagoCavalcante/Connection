@@ -12,8 +12,8 @@
 			$this->assertTrue(\class_exists('Connection\Operation'));
 		}
 
-		public function testQueryClassExist() : void {
-			$this->assertTrue(\class_exists('Connection\Query'));
+		public function testTableClassExist() : void {
+			$this->assertTrue(\class_exists('Connection\Table'));
 		}
 
 		public function testCountClassExist() : void {
