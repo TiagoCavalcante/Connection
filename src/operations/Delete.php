@@ -24,7 +24,7 @@
 		}
 
 		public function run() : void {
-			$limit = ($this->limit == 0) ? '' : "LIMIT {$this->limit}";
+			$limit = ($this->limit === 0) ? '' : "LIMIT {$this->limit}";
 
 			$where_question_marks = '';
 			for ($i = 0; $i < count($this->where); $i++) {

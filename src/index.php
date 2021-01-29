@@ -14,15 +14,15 @@
 
 			$this->name = $name;
 
-			if ($name == 'MySQL') {
+			if ($name === 'MySQL') {
 				$this->connection = new \PDO("mysql:host=$host;dbname=$database;port=$port;user=$user;password=$password");
 				# increase security
 				$this->connection->query("SET SESSION sql_mode = 'NO_BACKSLASH_ESCAPES';");
 			}
-			elseif ($name == 'PgSQL') {
+			elseif ($name === 'PgSQL') {
 				$this->connection = new \PDO("pgsql:host=$host;dbname=$database;port=$port;user=$user;password=$password");
 			}
-			elseif ($name == 'SQLite') {
+			elseif ($name === 'SQLite') {
 				$this->connection = new \PDO("sqlite:$database");
 			}
 			else {
@@ -49,7 +49,7 @@
 			$rows = $statement->fetchAll();
 
 			// SQLite3 returns [0 => []] for non-queries (insert, delete, ...)
-			if ($rows == [[]]) {
+			if ($rows === [[]]) {
 				$rows = [];
 			}
 

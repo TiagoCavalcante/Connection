@@ -27,7 +27,7 @@
 		}
 
 		private function update() : void {
-			$limit = ($this->limit == 0) ? '' : "LIMIT {$this->limit}";
+			$limit = ($this->limit === 0) ? '' : "LIMIT {$this->limit}";
 
 			$what_question_marks = '';
 			for ($i = 0; $i < count($this->what); $i++) {
@@ -50,7 +50,7 @@
 		}
 
 		private function updateWhere() : void {
-			$limit = ($this->limit == 0) ? '' : "LIMIT {$this->limit}";
+			$limit = ($this->limit === 0) ? '' : "LIMIT {$this->limit}";
 
 			$what_question_marks = '';
 			for ($i = 0; $i < count($this->what); $i++) {

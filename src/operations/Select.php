@@ -34,12 +34,12 @@
 		}
 
 		private function select() : array {
-			$limit = ($this->limit == 0) ? '' : "LIMIT {$this->limit}";
-			$offset = ($this->offset == 0) ? '' : "OFFSET {$this->offset}";
+			$limit = ($this->limit === 0) ? '' : "LIMIT {$this->limit}";
+			$offset = ($this->offset === 0) ? '' : "OFFSET {$this->offset}";
 	
 			$what = implode(',', $this->what);
 
-			if ($this->name == 'PgSQL') {
+			if ($this->name === 'PgSQL') {
 				$query = "SELECT $what FROM {$this->table} $limit $offset;";
 			}
 			else {
@@ -52,14 +52,14 @@
 		}
 
 		private function selectWhere() : array {
-			$limit = ($this->limit == 0) ? '' : "LIMIT {$this->limit}";
-			$offset = ($this->offset == 0) ? '' : "OFFSET {$this->offset}";
+			$limit = ($this->limit === 0) ? '' : "LIMIT {$this->limit}";
+			$offset = ($this->offset === 0) ? '' : "OFFSET {$this->offset}";
 
 			$what = implode(',', $this->what);
 
 			$where_question_marks = '';
 			for ($i = 0; $i < count($this->where); $i++) {
-				if ($i % 2 == 0) {
+				if ($i % 2 === 0) {
 					$where_question_marks .= "{$this->where[$i][1]} {$this->where[$i][0]} ?";
 				}
 				else {
@@ -85,7 +85,7 @@
 		}
 
 		public function run() : array {
-			if (count($this->where) == 0) {
+			if (count($this->where) === 0) {
 				return $this->select();
 			}
 			else {
