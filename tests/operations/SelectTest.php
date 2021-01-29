@@ -9,11 +9,7 @@
 					->run();
 			}
 
-			foreach ($this->connection->table('test')->select()->what('text')->run() as $result) {
-				$results[] = $result[0];
-			}
-
-			$this->assertCount(10, $results);
+			$this->assertCount(10, $this->connection->table('test')->select()->what('text')->run());
 
 			$this->truncate();
 		}
