@@ -120,11 +120,17 @@
 
 		public function run() : array {
 			if (count($this->where) === 0) {
-				return $this->select();
+				$rows = $this->select();
 			}
 			else {
-				return $this->selectWhere();
+				$rows = $this->selectWhere();
 			}
+
+			foreach ($rows as $row) {
+				removeNumericIndexesOfArray($row);
+			}
+
+			return $rows;
 		}
 	}
 ?>

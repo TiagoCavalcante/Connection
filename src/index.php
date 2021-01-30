@@ -1,6 +1,7 @@
 <?php
 	namespace Connection;
 
+	require_once __DIR__ . '/utils.php';
 	require_once __DIR__ . '/Table.php';
 
 	final class Connection {
@@ -51,6 +52,10 @@
 			// SQLite3 returns [0 => []] for non-queries (insert, delete, ...)
 			if ($rows === [[]]) {
 				$rows = [];
+			}
+
+			foreach ($rows as $row) {
+				removeNumericIndexesOfArray($row);
 			}
 
 			return $rows;
