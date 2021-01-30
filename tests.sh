@@ -14,6 +14,10 @@ touch env.php
 cat MySQL.env.php > env.php
 tests
 
+# MariaDB test
+cat MariaDB.env.php > env.php
+tests
+
 # PgSQL test
 cat PgSQL.env.php > env.php
 tests

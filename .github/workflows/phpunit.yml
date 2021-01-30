@@ -27,6 +27,15 @@ jobs:
         user: ${{ secrets.MYSQL_USER }}
       run: echo "<?php putenv('name=MySQL'); putenv('host=$host'); putenv('user=$user'); putenv('password=$password'); putenv('database=$database'); putenv('port=$port');" > MySQL.env.php
 
+    - name: create MariaDB.env.php file
+      env:
+        database: ${{ secrets.MARIADB_DATABASE }}
+        host: ${{ secrets.MARIADB_HOST }}
+        password: ${{ secrets.MARIADB_PASSWORD }}
+        port: ${{ secrets.MARIADB_PORT }}
+        user: ${{ secrets.MARIADB_USER }}
+      run: echo "<?php putenv('name=MariaDB'); putenv('host=$host'); putenv('user=$user'); putenv('password=$password'); putenv('database=$database'); putenv('port=$port');" > MariaDB.env.php
+
     - name: create PgSQL.env.php file
       env:
         database: ${{ secrets.PGSQL_DATABASE }}
