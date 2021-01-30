@@ -2,6 +2,7 @@ vendor
 composer.lock
 
 MySQL.env.php
+MariaDB.env.php
 PgSQL.env.php
 SQLite.env.php
 
