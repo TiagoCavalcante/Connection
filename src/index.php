@@ -14,7 +14,7 @@
 
 			$this->name = $name;
 
-			if ($name === 'MySQL') {
+			if ($name === 'MySQL' || $name === 'MariaDB') {
 				$this->connection = new \PDO("mysql:host=$host;dbname=$database;port=$port;user=$user;password=$password");
 				# increase security
 				$this->query("SET SESSION sql_mode = 'NO_BACKSLASH_ESCAPES'");
@@ -26,7 +26,7 @@
 				$this->connection = new \PDO("sqlite:$database");
 			}
 			else {
-				throw new \Exception('the env "name" must be "MySQL" | "PgSQL" | "SQLite"');
+				throw new \Exception('the env "name" must be "MySQL" | "MariaDB" | "PgSQL" | "SQLite"');
 			}
 
 			$this->connection->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);

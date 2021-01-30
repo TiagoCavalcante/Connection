@@ -23,7 +23,7 @@
 			$i = 0;
 			foreach ($this->columns as $columm => $value) {
 				if (str_contains($value, 'PRIMARY')) {
-					if ($this->name === 'MySQL') {
+					if ($this->name === 'MySQL' || $this->name === 'MariaDB') {
 						$value = str_replace(' PRIMARY', ' AUTO_INCREMENT PRIMARY KEY', $value);
 					}
 					elseif ($this->name === 'PgSQL') {
