@@ -1,27 +1,27 @@
 {
-	"name": "connection/connection",
-	"description": "A secure, multiple database ORM for PHP",
-	"authors": [
-		{
-			"name": "Tiago Cavalcante Trindade",
-			"email": "tiagotrindade111@gmail.com",
-			"homepage": "https://github.com/TiagoCavalcanteTrindade/"
-		}
-	],
-	"license": "MIT",
-	"homepage": "https://github.com/TiagoCavalcanteTrindade/Connection",
-	"autoload": {
-		"files": [
-			"src/index.php"
-		]
-	},
-	"autoload-dev": {
-		"files": [
-			"tests/Operation.php",
-			"env.php"
-		]
-	},
+  "name": "connection/connection",
+  "description": "A secure, multiple database ORM for PHP",
+  "authors": [
+    {
+      "name": "Tiago Cavalcante Trindade",
+      "email": "tiagotrindade111@gmail.com",
+      "homepage": "https://github.com/TiagoCavalcanteTrindade/"
+    }
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/TiagoCavalcanteTrindade/Connection",
+  "autoload": {
+    "files": [
+      "src/index.php"
+    ]
+  },
+  "autoload-dev": {
+    "files": [
+      "tests/Operation.php",
+      "env.php"
+    ]
+  },
     "require-dev": {
         "phpunit/phpunit": "^9"
-	}
+  }
 }

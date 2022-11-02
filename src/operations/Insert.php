@@ -1,38 +1,38 @@
 <?php
-	namespace Connection;
+  namespace Connection;
 
-	require_once __DIR__ . '/../Operation.php';
+  require_once __DIR__ . '/../Operation.php';
 
-	final class Insert extends Operation {
-		private array $what;
-		private array $values;
-		
-		public function what(string ...$what) : object {
-			$this->what = $what;
+  final class Insert extends Operation {
+    private array $what;
+    private array $values;
+    
+    public function what(string ...$what) : object {
+      $this->what = $what;
 
-			return $this;
-		}
+      return $this;
+    }
 
-		public function values(string ...$values) : object {
-			$this->values = $values;
+    public function values(string ...$values) : object {
+      $this->values = $values;
 
-			return $this;
-		}
+      return $this;
+    }
 
-		public function run() : void {
-			$what = implode(',', $this->what);
-			$values_question_marks = implode(',', array_fill(0, count($this->values), '?'));
+    public function run() : void {
+      $what = implode(',', $this->what);
+      $values_question_marks = implode(',', array_fill(0, count($this->values), '?'));
 
-			if ($this->name === 'PgSQL') {
-				$query = "INSERT INTO {$this->table} ($what) VALUES ($values_question_marks);";
-			}
-			else {
-				$query = "INSERT INTO `{$this->table}` ($what) VALUES ($values_question_marks);";
-			}
+      if ($this->name === 'PgSQL') {
+        $query = "INSERT INTO {$this->table} ($what) VALUES ($values_question_marks);";
+      }
+      else {
+        $query = "INSERT INTO `{$this->table}` ($what) VALUES ($values_question_marks);";
+      }
 
-			$statement = $this->connection->prepare($query);
+      $statement = $this->connection->prepare($query);
 
-			$statement->execute($this->values);
-		}
-	}
+      $statement->execute($this->values);
+    }
+  }
 ?>

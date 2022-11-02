@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 tests () {
-	./vendor/bin/phpunit --stop-on-failure --color tests
+  ./vendor/bin/phpunit --stop-on-failure --color tests
 }
 
 # grant permission to execute

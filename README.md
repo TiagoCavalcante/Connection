@@ -20,45 +20,45 @@ To install you need to:
 `sample.php`:
 ```php
 <?php
-	require_once 'env.php';
-	require_once 'vendor/autoload.php';
+  require_once 'env.php';
+  require_once 'vendor/autoload.php';
 
-	# initialize the database
-	$conn = new Connection\Connection();
+  # initialize the database
+  $conn = new Connection\Connection();
 
-	# create the table `posts` with the fields `title` and `text`
-	$conn->table('posts')
-		->create()
-		->columns([
-			'title' => 'TEXT',
-			'text' => 'TEXT'
-		])
-		->run();
+  # create the table `posts` with the fields `title` and `text`
+  $conn->table('posts')
+    ->create()
+    ->columns([
+      'title' => 'TEXT',
+      'text' => 'TEXT'
+    ])
+    ->run();
 
-	for ($i = 0; $i <= 9; $i++) {
-		# insert into the table `posts`
-		$conn->table('posts')
-			->insert()
-			->what('title', 'text')
-			->values('Title', 'Text')
-			->run();
-	}
+  for ($i = 0; $i <= 9; $i++) {
+    # insert into the table `posts`
+    $conn->table('posts')
+      ->insert()
+      ->what('title', 'text')
+      ->values('Title', 'Text')
+      ->run();
+  }
 
-	# go through the array of results
-	foreach ($conn->table('posts')->select()->what('title', 'text')->run() as $result) {
-		# echo the `title` and the `text` of a post
-		echo "Title: {$result['title']}\nText: {$result['text']}\n";
-	}
+  # go through the array of results
+  foreach ($conn->table('posts')->select()->what('title', 'text')->run() as $result) {
+    # echo the `title` and the `text` of a post
+    echo "Title: {$result['title']}\nText: {$result['text']}\n";
+  }
 
-	# colse the connection (necessary for security)
-	$conn->close();
+  # colse the connection (necessary for security)
+  $conn->close();
 ?>
 ```
 `env.php`:
 ```php
 <?php
-	putenv('name=SQLite');
-	putenv('database=database.sqlite3');
+  putenv('name=SQLite');
+  putenv('database=database.sqlite3');
 ?>
 ```
 And to execute:
@@ -74,10 +74,10 @@ Before init you need to:
     * all `envs` need to be defined with `putenv`, e.g.: `putenv('name=SQLite')`
     * all `envs` are case sensitive
     * all `env file` need to have the `env` *name*, its possible values are: `MySQL` (for MySQL and MariaDB), `PgSQL` and `SQLite`
-	* all `env file` need to have the `env` *database*
-	* the specific `envs` for each database are:
-	  * `MySQL`/`MariaDB`: *host*, *port*, *user* and *password*
-	  * `PgSQL`: *host*, *port*, *user* and *password*
+  * all `env file` need to have the `env` *database*
+  * the specific `envs` for each database are:
+    * `MySQL`/`MariaDB`: *host*, *port*, *user* and *password*
+    * `PgSQL`: *host*, *port*, *user* and *password*
   * grant perssion to execute `phpunit` with the following command: `chmod 777 vendor/bin/phpunit`
   * grant permission to execute the testing script with the following command: `chmod 777 tests.sh`
 
